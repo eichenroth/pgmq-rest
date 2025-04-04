@@ -4,13 +4,12 @@ import { Elysia } from "elysia";
 import { sql } from "./db";
 
 const app = new Elysia()
-  .use(swagger({
-    path: "/docs",
-    documentation: {
-      info: { title: "pgmq-rest documentation",version: "1.0.0",
-      },
-    },
-  }))
+  .use(
+    swagger({
+      path: "/docs",
+      documentation: { info: { title: "pgmq-rest documentation", version: "1.0.0" } },
+    }),
+  )
   .get("/", () => "Server is running")
 
   // --- QUEUE MANAGEMENT ---

@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import prettier from 'eslint-plugin-prettier';
 
 export default [
   js.configs.recommended,
@@ -23,15 +24,13 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
+      'prettier': prettier,
       'simple-import-sort': simpleImportSort,
     },
     rules: {
-      // Basic formatting
-      'max-len': ['error', { code: 120 }],
-      'semi': ['error', 'always'],
-      'quotes': ['error', 'double'],
-      'indent': ['error', 2],
-      
+      // Prettier
+      'prettier/prettier': ['error', { trailingComma: 'all', printWidth: 120 }],
+
       // Import sorting
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',

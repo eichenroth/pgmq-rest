@@ -1,6 +1,6 @@
 const getEnv = (name: string, defaultValue?: string): string => {
   const value = Bun.env[name] ?? defaultValue;
-  if (!value) throw new Error(`ENV variable ${name} is not set!`);  
+  if (!value) throw new Error(`ENV variable ${name} is not set!`);
   return value;
 };
 

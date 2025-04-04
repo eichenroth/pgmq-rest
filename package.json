@@ -1,0 +1,17 @@
+{
+  "name": "pgmq-rest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch src/index.ts"
+  },
+  "keywords": [],
+  "author": "Friedrich Eichenroth",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "bun-types": "^1.2.8"
+  }
+}

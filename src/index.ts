@@ -8,19 +8,20 @@ const server = Bun.serve({
     close() {},
   },
   routes: {
-    '/': () => new Response("Server is running"),
+    '/': () => Response.json({ message: "Server is running" }),
 
-    '/api/v1/test': async () => {
-      const result = await sql`SELECT NOW() as now`;
-      console.log(result);
-      return new Response(JSON.stringify({ time: result[0].now }), {
-        headers: { 'Content-Type': 'application/json' }
-      });
-    },
+    // --- QUEUE MANAGEMENT ---
+
+    '/api/v1/create': {
+      POST: async (request: Request) => {
+        const { queue_name } = await request.json();
+        await sql`SELECT pgmq.create(queue_name => ${queue_name}::text)`;
+        return new Response();
+      }},
+
+    // fallback
+    "/*": () => Response.json({ message: "Not Found" }, { status: 404 }),
   },
-
-  // fallback
-  fetch: () => new Response("Not Found", { status: 404 }),
 });
 
-console.log(`Server running at http://localhost:${server.port}`);
+console.log(`Server running at http://${server.hostname}:${server.port}`);

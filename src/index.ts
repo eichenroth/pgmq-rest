@@ -1,4 +1,4 @@
-import { getClient } from "./db";
+import { sql } from "./db";
 
 const server = Bun.serve({
   port: 8080,
@@ -11,22 +11,16 @@ const server = Bun.serve({
     '/': () => new Response("Server is running"),
 
     '/api/v1/test': async () => {
-      const client = await getClient();
-      try {
-        const result = await client.query('SELECT NOW()');
-        return new Response(JSON.stringify({ time: result.rows[0].now }), {
-          headers: { 'Content-Type': 'application/json' }
-        });
-      } finally {
-        client.release();
-      }
+      const result = await sql`SELECT NOW() as now`;
+      console.log(result);
+      return new Response(JSON.stringify({ time: result[0].now }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
     },
   },
 
-  // Fallback
-  fetch() {
-    return new Response("Not Found", { status: 404 });
-  },
+  // fallback
+  fetch: () => new Response("Not Found", { status: 404 }),
 });
 
 console.log(`Server running at http://localhost:${server.port}`);

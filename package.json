@@ -11,6 +11,12 @@
     "eslint": "^9.24.0",
     "eslint-plugin-simple-import-sort": "^12.1.1"
   },
+  "dependencies": {
+    "@elysiajs/swagger": "^1.2.2",
+    "elysia": "^1.2.25",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  },
   "description": "",
   "keywords": [],
   "license": "MIT",

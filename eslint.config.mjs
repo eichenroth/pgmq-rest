@@ -29,6 +29,7 @@ export default [
       // Basic formatting
       'max-len': ['error', { code: 120 }],
       'semi': ['error', 'always'],
+      'quotes': ['error', 'double'],
       'indent': ['error', 2],
       
       // Import sorting

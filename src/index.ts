@@ -1,27 +1,24 @@
+import swagger from "@elysiajs/swagger";
+import { Elysia } from "elysia";
+
 import { sql } from "./db";
 
-const server = Bun.serve({
-  port: 8080,
-  websocket: {
-    message() {}, // Required but can be empty
-    open() {},
-    close() {},
-  },
-  routes: {
-    '/': () => Response.json({ message: "Server is running" }),
+const app = new Elysia()
+  .use(swagger({
+    path: "/docs",
+    documentation: {
+      info: { title: "pgmq-rest documentation",version: "1.0.0",
+      },
+    },
+  }))
+  .get("/", () => "Server is running")
 
-    // --- QUEUE MANAGEMENT ---
+  // --- QUEUE MANAGEMENT ---
+  .post("/api/v1/create", async ({ body }) => {
+    const { queue_name } = body as { queue_name: string };
+    await sql`SELECT pgmq.create(queue_name => ${queue_name}::text)`;
+    return {};
+  })
+  .listen(8080);
 
-    '/api/v1/create': {
-      POST: async (request: Request) => {
-        const { queue_name } = await request.json();
-        await sql`SELECT pgmq.create(queue_name => ${queue_name}::text)`;
-        return new Response();
-      }},
-
-    // fallback
-    "/*": () => Response.json({ message: "Not Found" }, { status: 404 }),
-  },
-});
-
-console.log(`Server running at http://${server.hostname}:${server.port}`);
+console.log(`Server running at http://${app.server?.hostname}:${app.server?.port}`);

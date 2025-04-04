@@ -1,8 +1,8 @@
 const server = Bun.serve({
   port: 8080,
-  fetch(request: Request) {
+  fetch() {
     return new Response("Hello from Bun!");
   },
 });
 
-console.log(`Listening on http://localhost:${server.port}`);
+console.info(`Listening on http://localhost:${server.port}`);

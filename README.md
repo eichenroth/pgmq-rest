@@ -25,5 +25,5 @@ A REST API for pgmq.
 
 2. Run the dev server:
     ```bash
-    bun dev
+    DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASSWORD=postgres DB_NAME=postgres bun dev
     ```

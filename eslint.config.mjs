@@ -29,7 +29,7 @@ export default [
     },
     rules: {
       // Prettier
-      'prettier/prettier': ['error', { trailingComma: 'all', printWidth: 120 }],
+      'prettier/prettier': ['error', { trailingComma: 'all', printWidth: 150 }],
 
       // Import sorting
       'simple-import-sort/imports': 'error',

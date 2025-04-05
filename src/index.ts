@@ -2,14 +2,10 @@ import swagger from "@elysiajs/swagger";
 import { Elysia, t } from "elysia";
 
 import { getClient } from "./db";
+import { MessageIdRecord, MessageRecord } from "./types";
 
 const app = new Elysia()
-  .use(
-    swagger({
-      path: "/docs",
-      documentation: { info: { title: "pgmq-rest documentation", version: "1.0.0" } },
-    }),
-  )
+  .use(swagger({ path: "/docs", documentation: { info: { title: "pgmq-rest documentation", version: "1.0.0" } } }))
   .get("/", () => "Server is running")
 
   // --- SENDING MESSAGES ---
@@ -21,7 +17,7 @@ const app = new Elysia()
     "/api/v1/send",
     async ({ body: { queue_name, msg, delay = 0 } }) => {
       const client = await getClient();
-      const result = await client.query<[string]>(
+      const result = await client.query<MessageIdRecord>(
         { rowMode: "array", text: "SELECT pgmq.send($1::text, $2::jsonb, $3::integer)", name: "send" },
         [queue_name, msg, delay],
       );
@@ -40,7 +36,7 @@ const app = new Elysia()
     "/api/v1/send_batch",
     async ({ body: { queue_name, msgs, delay = 0 } }) => {
       const client = await getClient();
-      const result = await client.query<[string]>(
+      const result = await client.query<MessageIdRecord>(
         { rowMode: "array", text: "SELECT pgmq.send_batch($1::text, $2::jsonb[], $3::integer)", name: "send_batch" },
         [queue_name, msgs, delay],
       );
@@ -57,8 +53,21 @@ const app = new Elysia()
   // pgmq.read(queue_name text, vt integer, qty integer, conditional jsonb DEFAULT '{}')
   // RETURNS SETOF pgmq.message_record
 
-  // ...
-
+  .post(
+    "/api/v1/read",
+    async ({ body: { queue_name, vt, qty, conditional = {} } }) => {
+      const client = await getClient();
+      const result = await client.query<MessageRecord>(
+        { rowMode: "array", text: "SELECT * FROM pgmq.read($1::text, $2::integer, $3::integer, $4::jsonb)", name: "read" },
+        [queue_name, vt, qty, conditional],
+      );
+      return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
+    },
+    {
+      body: t.Object({ queue_name: t.String(), vt: t.Integer(), qty: t.Integer(), conditional: t.Optional(t.Any()) }),
+      response: t.Array(t.Tuple([t.Number(), t.Number(), t.Date(), t.Date(), t.Any(), t.Any()])),
+    },
+  )
   // pgmq.read_with_poll(queue_name text, vt integer, qty integer, max_poll_seconds integer DEFAULT 5, poll_interval_ms integer DEFAULT 100, conditional jsonb DEFAULT '{}')
   // RETURNS SETOF pgmq.message_record
 

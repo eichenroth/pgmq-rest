@@ -33,11 +33,7 @@ const app = new Elysia()
     },
   )
 
-  // pgmq.send_batch(
-  //   queue_name text,
-  //   msgs jsonb[],
-  //   delay integer DEFAULT 0
-  // )
+  // pgmq.send_batch(queue_name text, msgs jsonb[], delay integer DEFAULT 0)
   // RETURNS SETOF bigint
 
   .post(
@@ -56,10 +52,55 @@ const app = new Elysia()
     },
   )
 
+  // --- READING MESSAGES ---
+
+  // pgmq.read(queue_name text, vt integer, qty integer, conditional jsonb DEFAULT '{}')
+  // RETURNS SETOF pgmq.message_record
+
+  // ...
+
+  // pgmq.read_with_poll(queue_name text, vt integer, qty integer, max_poll_seconds integer DEFAULT 5, poll_interval_ms integer DEFAULT 100, conditional jsonb DEFAULT '{}')
+  // RETURNS SETOF pgmq.message_record
+
+  // ...
+
+  // pgmq.pop(queue_name text)
+  // RETURNS SETOF pgmq.message_record
+
+  // ...
+
+  // --- DELETING/ARCHIVING MESSAGES ---
+
+  // pgmq.delete (queue_name text, msg_id: bigint)
+  // RETURNS boolean
+
+  // ...
+
+  // pgmq.delete (queue_name text, msg_ids: bigint[])
+  // RETURNS SETOF bigint
+
+  // ...
+
+  // purge_queue(queue_name text)
+  // RETURNS bigint
+
+  // ...
+
+  // pgmq.archive(queue_name text, msg_id bigint)
+  // RETURNS boolean
+
+  // ...
+
+  // pgmq.archive(queue_name text, msg_ids bigint[])
+  // RETURNS SETOF bigint
+
+  // ...
+
   // --- QUEUE MANAGEMENT ---
 
   // pgmq.create(queue_name text)
-  // RETURNS VOID
+  // RETURNS void
+
   .post(
     "/api/v1/create",
     async ({ body: { queue_name } }) => {
@@ -68,6 +109,49 @@ const app = new Elysia()
     },
     { body: t.Object({ queue_name: t.String() }) },
   )
+
+  // pgmq.create_partitioned (queue-ue_name text, partition_interval text DEFAULT '10000'::text, retention_interval text DEFAULT '100000'::text)
+  // RETURNS void
+
+  // ...
+
+  // pgmq.create_unlogged(queue_name text)
+  // RETURNS void
+
+  // ...
+
+  // pgmq.detach_archive(queue_name text)
+  // RETURNS void
+
+  // ...
+
+  // pgmq.drop_queue(queue_name text)
+  // RETURNS boolean
+
+  // ...
+
+  // --- UTILITIES ---
+
+  // pgmq.set_vt(queue_name text, msg_id bigint, vt_offset integer)
+  // RETURNS pgmq.message_record
+
+  // ...
+
+  // pgmq.list_queues()
+  // RETURNS TABLE(queue_name text, created_at timestamp with time zone, is_partitioned boolean, is_unlogged boolean)
+
+  // ...
+
+  // pgmq.metrics(queue_name: text)
+  // RETURNS TABLE(queue_name text, queue_length bigint, newest_msg_age_sec integer, oldest_msg_age_sec integer, total_messages bigint, scrape_time timestamp with time zone)
+
+  // ...
+
+  // pgmq.metrics_all()
+  // RETURNS TABLE(queue_name text, queue_length bigint, newest_msg_age_sec integer, oldest_msg_age_sec integer, total_messages bigint, scrape_time timestamp with time zone)
+
+  // ...
+
   .listen(8080);
 
 console.log(`Server running at http://${app.server?.hostname}:${app.server?.port}`);

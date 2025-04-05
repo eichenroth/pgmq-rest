@@ -347,17 +347,10 @@ const app = new Elysia()
 
   .post(
     "/api/v1/metrics_all",
-    async () => {
+    async (): Promise<[string, number, number, number, number, Date][]> => {
       const client = await getClient();
       const result = await client.query<MetricRecord>({ rowMode: "array", text: "SELECT * FROM pgmq.metrics_all()", name: "metrics_all" });
-      return result.rows.map((row): [string, number, number, number, number, Date] => [
-        row[0],
-        Number(row[1]),
-        row[2],
-        row[3],
-        Number(row[4]),
-        row[5],
-      ]);
+      return result.rows.map((row) => [row[0], Number(row[1]), row[2], row[3], Number(row[4]), row[5]]);
     },
     { response: t.Array(MetricRecordSchema) },
   )

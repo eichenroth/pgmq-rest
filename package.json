@@ -27,6 +27,7 @@
   "scripts": {
     "start": "bun run src/index.ts",
     "dev": "bun --watch src/index.ts",
+    "test": "bun test",
     "lint": "bun run lint:eslint && bun run lint:typescript",
     "lint:eslint": "eslint . --ext .ts",
     "lint:typescript": "tsc --noEmit"

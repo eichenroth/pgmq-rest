@@ -5,8 +5,8 @@ import { getClient } from "./db";
 import { BooleanRecord, IdRecord, MessageRecord, MetricRecord, QueueRecord } from "./types";
 
 const MessageRecordSchema = t.Tuple([t.Number(), t.Number(), t.Date(), t.Date(), t.Any(), t.Any()]);
-const QueueRecordSchema = t.Tuple([t.String(), t.Date(), t.Boolean(), t.Boolean()]);
-const MetricRecordSchema = t.Tuple([t.String(), t.Number(), t.Number(), t.Number(), t.Number(), t.Date()]);
+const QueueRecordSchema = t.Tuple([t.String(), t.Boolean(), t.Boolean(), t.Date()]);
+const MetricRecordSchema = t.Tuple([t.String(), t.Number(), t.Nullable(t.Number()), t.Nullable(t.Number()), t.Number(), t.Date()]);
 
 const app = new Elysia()
   .use(swagger({ path: "/docs", documentation: { info: { title: "pgmq-rest documentation", version: "1.0.0" } } }))
@@ -82,33 +82,7 @@ const app = new Elysia()
   // pgmq.read_with_poll (queue_name text, vt integer, qty integer, max_poll_seconds integer DEFAULT 5, poll_interval_ms integer DEFAULT 100, conditional jsonb DEFAULT '{}')
   // RETURNS SETOF pgmq.message_record
 
-  .post(
-    "/api/v1/read_with_poll",
-    async ({ body: { queue_name, vt, qty, max_poll_seconds = 5, poll_interval_ms = 100, conditional = {} } }) => {
-      const client = await getClient();
-      const result = await client.query<MessageRecord>(
-        {
-          rowMode: "array",
-          text: "SELECT * FROM pgmq.read_with_poll($1::text, $2::integer, $3::integer, $4::integer, $5::integer, $6::jsonb)",
-          name: "read_with_poll",
-        },
-        [queue_name, vt, qty, max_poll_seconds, poll_interval_ms, conditional],
-      );
-      return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
-    },
-    {
-      body: t.Object({
-        queue_name: t.String(),
-        vt: t.Integer(),
-        qty: t.Integer(),
-        max_poll_seconds: t.Optional(t.Integer()),
-        poll_interval_ms: t.Optional(t.Integer()),
-        conditional: t.Optional(t.Any()),
-      }),
-      response: t.Array(MessageRecordSchema),
-      tags: ["Reading Messages"],
-    },
-  )
+  // ...
 
   // pgmq.pop (queue_name text)
   // RETURNS SETOF pgmq.message_record
@@ -235,24 +209,7 @@ const app = new Elysia()
   // pgmq.create_partitioned (queue_name text, partition_interval text DEFAULT '10000'::text, retention_interval text DEFAULT '100000'::text)
   // RETURNS void
 
-  .post(
-    "/api/v1/create_partitioned",
-    async ({ body: { queue_name, partition_interval = "10000", retention_interval = "100000" } }) => {
-      const client = await getClient();
-      await client.query(
-        {
-          rowMode: "array",
-          text: "SELECT pgmq.create_partitioned($1::text, $2::text, $3::text)",
-          name: "create_partitioned",
-        },
-        [queue_name, partition_interval, retention_interval],
-      );
-    },
-    {
-      body: t.Object({ queue_name: t.String(), partition_interval: t.Optional(t.String()), retention_interval: t.Optional(t.String()) }),
-      tags: ["Queue Management"],
-    },
-  )
+  // ...
 
   // pgmq.create_unlogged (queue_name text)
   // RETURNS void
@@ -269,14 +226,7 @@ const app = new Elysia()
   // pgmq.detach_archive (queue_name text)
   // RETURNS void
 
-  .post(
-    "/api/v1/detach_archive",
-    async ({ body: { queue_name } }) => {
-      const client = await getClient();
-      await client.query({ rowMode: "array", text: "SELECT pgmq.detach_archive($1::text)", name: "detach_archive" }, [queue_name]);
-    },
-    { body: t.Object({ queue_name: t.String() }), tags: ["Queue Management"] },
-  )
+  // ...
 
   // pgmq.drop_queue (queue_name text)
   // RETURNS boolean
@@ -321,7 +271,7 @@ const app = new Elysia()
   )
 
   // pgmq.list_queues ()
-  // RETURNS TABLE(queue_name text, created_at timestamp with time zone, is_partitioned boolean, is_unlogged boolean)
+  // RETURNS TABLE(queue_name text, is_partitioned boolean, is_unlogged boolean, created_at timestamp with time zone)
 
   .post(
     "/api/v1/list_queues",
@@ -358,7 +308,7 @@ const app = new Elysia()
 
   .post(
     "/api/v1/metrics_all",
-    async (): Promise<[string, number, number, number, number, Date][]> => {
+    async (): Promise<[string, number, number | null, number | null, number, Date][]> => {
       const client = await getClient();
       const result = await client.query<MetricRecord>({ rowMode: "array", text: "SELECT * FROM pgmq.metrics_all()", name: "metrics_all" });
       return result.rows.map((row) => [row[0], Number(row[1]), row[2], row[3], Number(row[4]), row[5]]);

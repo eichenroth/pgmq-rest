@@ -1,7 +1,7 @@
 import swagger from "@elysiajs/swagger";
 import { Elysia, t } from "elysia";
 
-import { getClient } from "./db";
+import { withClient } from "./db";
 import { BooleanRecord, IdRecord, MessageRecord, MetricRecord, QueueRecord } from "./types";
 
 const MessageRecordSchema = t.Tuple([t.Number(), t.Number(), t.Date(), t.Date(), t.Any(), t.Any()]);
@@ -20,16 +20,17 @@ const app = new Elysia()
   .post(
     "/api/v1/send",
     async ({ body: { queue_name, msg, delay = 0 } }) => {
-      const client = await getClient();
-      const result = await client.query<IdRecord>(
-        {
-          rowMode: "array",
-          text: "SELECT pgmq.send($1::text, $2::jsonb, $3::integer)",
-          name: "send",
-        },
-        [queue_name, msg, delay],
-      );
-      return result.rows.map(([id]) => Number(id));
+      return await withClient(async (client) => {
+        const result = await client.query<IdRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT pgmq.send($1::text, $2::jsonb, $3::integer)",
+            name: "send",
+          },
+          [queue_name, msg, delay],
+        );
+        return result.rows.map(([id]) => Number(id));
+      });
     },
     {
       body: t.Object({ queue_name: t.String(), msg: t.Any(), delay: t.Optional(t.Integer()) }),
@@ -44,12 +45,13 @@ const app = new Elysia()
   .post(
     "/api/v1/send_batch",
     async ({ body: { queue_name, msgs, delay = 0 } }) => {
-      const client = await getClient();
-      const result = await client.query<IdRecord>(
-        { rowMode: "array", text: "SELECT pgmq.send_batch($1::text, $2::jsonb[], $3::integer)", name: "send_batch" },
-        [queue_name, msgs, delay],
-      );
-      return result.rows.map(([id]) => Number(id));
+      return await withClient(async (client) => {
+        const result = await client.query<IdRecord>(
+          { rowMode: "array", text: "SELECT pgmq.send_batch($1::text, $2::jsonb[], $3::integer)", name: "send_batch" },
+          [queue_name, msgs, delay],
+        );
+        return result.rows.map(([id]) => Number(id));
+      });
     },
     {
       body: t.Object({ queue_name: t.String(), msgs: t.Array(t.Any()), delay: t.Optional(t.Integer()) }),
@@ -66,12 +68,13 @@ const app = new Elysia()
   .post(
     "/api/v1/read",
     async ({ body: { queue_name, vt, qty, conditional = {} } }) => {
-      const client = await getClient();
-      const result = await client.query<MessageRecord>(
-        { rowMode: "array", text: "SELECT * FROM pgmq.read($1::text, $2::integer, $3::integer, $4::jsonb)", name: "read" },
-        [queue_name, vt, qty, conditional],
-      );
-      return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
+      return await withClient(async (client) => {
+        const result = await client.query<MessageRecord>(
+          { rowMode: "array", text: "SELECT * FROM pgmq.read($1::text, $2::integer, $3::integer, $4::jsonb)", name: "read" },
+          [queue_name, vt, qty, conditional],
+        );
+        return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
+      });
     },
     {
       body: t.Object({ queue_name: t.String(), vt: t.Integer(), qty: t.Integer(), conditional: t.Optional(t.Any()) }),
@@ -90,9 +93,10 @@ const app = new Elysia()
   .post(
     "/api/v1/pop",
     async ({ body: { queue_name } }) => {
-      const client = await getClient();
-      const result = await client.query<MessageRecord>({ rowMode: "array", text: "SELECT * FROM pgmq.pop($1::text)", name: "pop" }, [queue_name]);
-      return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
+      return await withClient(async (client) => {
+        const result = await client.query<MessageRecord>({ rowMode: "array", text: "SELECT * FROM pgmq.pop($1::text)", name: "pop" }, [queue_name]);
+        return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
+      });
     },
     { body: t.Object({ queue_name: t.String() }), response: t.Array(MessageRecordSchema), tags: ["Reading Messages"] },
   )
@@ -105,16 +109,17 @@ const app = new Elysia()
   .post(
     "/api/v1/delete",
     async ({ body: { queue_name, msg_id } }) => {
-      const client = await getClient();
-      const result = await client.query<BooleanRecord>(
-        {
-          rowMode: "array",
-          text: "SELECT pgmq.delete($1::text, $2::bigint)",
-          name: "delete",
-        },
-        [queue_name, msg_id],
-      );
-      return result.rows[0]?.[0] ?? false;
+      return await withClient(async (client) => {
+        const result = await client.query<BooleanRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT pgmq.delete($1::text, $2::bigint)",
+            name: "delete",
+          },
+          [queue_name, msg_id],
+        );
+        return result.rows[0]?.[0] ?? false;
+      });
     },
     { body: t.Object({ queue_name: t.String(), msg_id: t.Number() }), response: t.Boolean(), tags: ["Deleting Messages"] },
   )
@@ -125,16 +130,17 @@ const app = new Elysia()
   .post(
     "/api/v1/delete_batch",
     async ({ body: { queue_name, msg_ids } }) => {
-      const client = await getClient();
-      const result = await client.query<IdRecord>(
-        {
-          rowMode: "array",
-          text: "SELECT pgmq.delete($1::text, $2::bigint[])",
-          name: "delete_batch",
-        },
-        [queue_name, msg_ids],
-      );
-      return result.rows.map(([id]) => Number(id));
+      return await withClient(async (client) => {
+        const result = await client.query<IdRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT pgmq.delete($1::text, $2::bigint[])",
+            name: "delete_batch",
+          },
+          [queue_name, msg_ids],
+        );
+        return result.rows.map(([id]) => Number(id));
+      });
     },
     { body: t.Object({ queue_name: t.String(), msg_ids: t.Array(t.Number()) }), response: t.Array(t.Number()), tags: ["Deleting Messages"] },
   )
@@ -145,9 +151,10 @@ const app = new Elysia()
   .post(
     "/api/v1/purge_queue",
     async ({ body: { queue_name } }) => {
-      const client = await getClient();
-      const result = await client.query<IdRecord>({ rowMode: "array", text: "SELECT pgmq.purge_queue($1::text)", name: "purge_queue" }, [queue_name]);
-      return result.rows[0]?.[0] ? Number(result.rows[0][0]) : 0;
+      return await withClient(async (client) => {
+        const result = await client.query<IdRecord>({ rowMode: "array", text: "SELECT pgmq.purge_queue($1::text)", name: "purge_queue" }, [queue_name]);
+        return result.rows[0]?.[0] ? Number(result.rows[0][0]) : 0;
+      });
     },
     { body: t.Object({ queue_name: t.String() }), response: t.Number(), tags: ["Deleting Messages"] },
   )
@@ -158,16 +165,17 @@ const app = new Elysia()
   .post(
     "/api/v1/archive",
     async ({ body: { queue_name, msg_id } }) => {
-      const client = await getClient();
-      const result = await client.query<BooleanRecord>(
-        {
-          rowMode: "array",
-          text: "SELECT pgmq.archive($1::text, $2::bigint)",
-          name: "archive",
-        },
-        [queue_name, msg_id],
-      );
-      return result.rows[0]?.[0] ?? false;
+      return await withClient(async (client) => {
+        const result = await client.query<BooleanRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT pgmq.archive($1::text, $2::bigint)",
+            name: "archive",
+          },
+          [queue_name, msg_id],
+        );
+        return result.rows[0]?.[0] ?? false;
+      });
     },
     { body: t.Object({ queue_name: t.String(), msg_id: t.Number() }), response: t.Boolean(), tags: ["Deleting Messages"] },
   )
@@ -178,16 +186,17 @@ const app = new Elysia()
   .post(
     "/api/v1/archive_batch",
     async ({ body: { queue_name, msg_ids } }) => {
-      const client = await getClient();
-      const result = await client.query<IdRecord>(
-        {
-          rowMode: "array",
-          text: "SELECT pgmq.archive($1::text, $2::bigint[])",
-          name: "archive_batch",
-        },
-        [queue_name, msg_ids],
-      );
-      return result.rows.map(([id]) => Number(id));
+      return await withClient(async (client) => {
+        const result = await client.query<IdRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT pgmq.archive($1::text, $2::bigint[])",
+            name: "archive_batch",
+          },
+          [queue_name, msg_ids],
+        );
+        return result.rows.map(([id]) => Number(id));
+      });
     },
     { body: t.Object({ queue_name: t.String(), msg_ids: t.Array(t.Number()) }), response: t.Array(t.Number()), tags: ["Deleting Messages"] },
   )
@@ -200,8 +209,9 @@ const app = new Elysia()
   .post(
     "/api/v1/create",
     async ({ body: { queue_name } }) => {
-      const client = await getClient();
-      await client.query({ rowMode: "array", text: "SELECT pgmq.create($1::text)", name: "create" }, [queue_name]);
+      return await withClient(async (client) => {
+        await client.query({ rowMode: "array", text: "SELECT pgmq.create($1::text)", name: "create" }, [queue_name]);
+      });
     },
     { body: t.Object({ queue_name: t.String() }), tags: ["Queue Management"] },
   )
@@ -217,8 +227,9 @@ const app = new Elysia()
   .post(
     "/api/v1/create_unlogged",
     async ({ body: { queue_name } }) => {
-      const client = await getClient();
-      await client.query({ rowMode: "array", text: "SELECT pgmq.create_unlogged($1::text)", name: "create_unlogged" }, [queue_name]);
+      return await withClient(async (client) => {
+        await client.query({ rowMode: "array", text: "SELECT pgmq.create_unlogged($1::text)", name: "create_unlogged" }, [queue_name]);
+      });
     },
     { body: t.Object({ queue_name: t.String() }), tags: ["Queue Management"] },
   )
@@ -234,16 +245,17 @@ const app = new Elysia()
   .post(
     "/api/v1/drop_queue",
     async ({ body: { queue_name } }) => {
-      const client = await getClient();
-      const result = await client.query<BooleanRecord>(
-        {
-          rowMode: "array",
-          text: "SELECT pgmq.drop_queue($1::text)",
-          name: "drop_queue",
-        },
-        [queue_name],
-      );
-      return result.rows[0]?.[0] ?? false;
+      return await withClient(async (client) => {
+        const result = await client.query<BooleanRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT pgmq.drop_queue($1::text)",
+            name: "drop_queue",
+          },
+          [queue_name],
+        );
+        return result.rows[0]?.[0] ?? false;
+      });
     },
     { body: t.Object({ queue_name: t.String() }), response: t.Boolean(), tags: ["Queue Management"] },
   )
@@ -256,12 +268,13 @@ const app = new Elysia()
   .post(
     "/api/v1/set_vt",
     async ({ body: { queue_name, msg_id, vt_offset } }) => {
-      const client = await getClient();
-      const result = await client.query<MessageRecord>(
-        { rowMode: "array", text: "SELECT pgmq.set_vt($1::text, $2::bigint, $3::integer)", name: "set_vt" },
-        [queue_name, msg_id, vt_offset],
-      );
-      return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
+      return await withClient(async (client) => {
+        const result = await client.query<MessageRecord>(
+          { rowMode: "array", text: "SELECT * FROM pgmq.set_vt($1::text, $2::bigint, $3::integer)", name: "set_vt" },
+          [queue_name, msg_id, vt_offset],
+        );
+        return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
+      });
     },
     {
       body: t.Object({ queue_name: t.String(), msg_id: t.Number(), vt_offset: t.Number() }),
@@ -276,9 +289,10 @@ const app = new Elysia()
   .post(
     "/api/v1/list_queues",
     async () => {
-      const client = await getClient();
-      const result = await client.query<QueueRecord>({ rowMode: "array", text: "SELECT * FROM pgmq.list_queues()", name: "list_queues" });
-      return result.rows;
+      return await withClient(async (client) => {
+        const result = await client.query<QueueRecord>({ rowMode: "array", text: "SELECT * FROM pgmq.list_queues()", name: "list_queues" });
+        return result.rows;
+      });
     },
     { response: t.Array(QueueRecordSchema), tags: ["Utilities"] },
   )
@@ -289,16 +303,17 @@ const app = new Elysia()
   .post(
     "/api/v1/metrics",
     async ({ body: { queue_name } }) => {
-      const client = await getClient();
-      const result = await client.query<MetricRecord>(
-        {
-          rowMode: "array",
-          text: "SELECT * FROM pgmq.metrics($1::text)",
-          name: "metrics",
-        },
-        [queue_name],
-      );
-      return result.rows.map((row) => [row[0], Number(row[1]), row[2], row[3], Number(row[4]), row[5]]);
+      return await withClient(async (client) => {
+        const result = await client.query<MetricRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT * FROM pgmq.metrics($1::text)",
+            name: "metrics",
+          },
+          [queue_name],
+        );
+        return result.rows.map((row) => [row[0], Number(row[1]), row[2], row[3], Number(row[4]), row[5]]);
+      });
     },
     { body: t.Object({ queue_name: t.String() }), response: t.Array(MetricRecordSchema), tags: ["Utilities"] },
   )
@@ -309,9 +324,10 @@ const app = new Elysia()
   .post(
     "/api/v1/metrics_all",
     async (): Promise<[string, number, number | null, number | null, number, Date][]> => {
-      const client = await getClient();
-      const result = await client.query<MetricRecord>({ rowMode: "array", text: "SELECT * FROM pgmq.metrics_all()", name: "metrics_all" });
-      return result.rows.map((row) => [row[0], Number(row[1]), row[2], row[3], Number(row[4]), row[5]]);
+      return await withClient(async (client) => {
+        const result = await client.query<MetricRecord>({ rowMode: "array", text: "SELECT * FROM pgmq.metrics_all()", name: "metrics_all" });
+        return result.rows.map((row) => [row[0], Number(row[1]), row[2], row[3], Number(row[4]), row[5]]);
+      });
     },
     { response: t.Array(MetricRecordSchema), tags: ["Utilities"] },
   )

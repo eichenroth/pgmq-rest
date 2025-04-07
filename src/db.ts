@@ -15,4 +15,11 @@ const db = new Pool({
   max: 20,
 });
 
-export const getClient = async (): Promise<PoolClient> => await db.connect();
+export const withClient = async <T>(fn: (client: PoolClient) => Promise<T>): Promise<T> => {
+  const client = await db.connect();
+  try {
+    return await fn(client);
+  } finally {
+    client.release();
+  }
+};

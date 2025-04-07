@@ -28,6 +28,8 @@ export default [
       'simple-import-sort': simpleImportSort,
     },
     rules: {
+      "no-unused-vars": "off",
+
       // Prettier
       'prettier/prettier': ['error', { trailingComma: 'all', printWidth: 150 }],
 

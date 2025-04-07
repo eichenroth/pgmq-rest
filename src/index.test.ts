@@ -2,7 +2,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, test } from "bun:te
 import { randomUUID } from "crypto";
 import { clearTimeout, setTimeout } from "timers";
 
-import { getClient } from "./db";
+import { withClient } from "./db";
 
 const API_URL = "http://localhost:8080/api/v1";
 
@@ -31,9 +31,10 @@ const apiRequest = async (endpoint: string, body: any, timeout = 5000): Promise<
 
 describe("pgmq-rest", () => {
   beforeAll(async () => {
-    const client = await getClient();
-    await client.query("DROP EXTENSION IF EXISTS pgmq;");
-    await client.query("CREATE EXTENSION IF NOT EXISTS pgmq;");
+    await withClient(async (client) => {
+      await client.query("DROP EXTENSION IF EXISTS pgmq;");
+      await client.query("CREATE EXTENSION IF NOT EXISTS pgmq;");
+    });
   });
 
   describe("Queue Management", () => {

@@ -4,7 +4,7 @@ import { clearTimeout, setTimeout } from "timers";
 
 import { withClient } from "./db";
 
-const API_URL = "http://localhost:8080/api/v1";
+const API_URL = Bun.env.API_URL || "http://localhost:8080/api/v1";
 
 const uniqueName = (): string => `test_queue_${randomUUID().replace(/-/g, "")}`;
 

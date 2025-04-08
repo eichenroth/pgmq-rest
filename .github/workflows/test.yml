@@ -37,8 +37,8 @@ jobs:
         run: |
           docker run -d \
             --name pgmq-rest \
-            --link pgmq:postgres \
-            -e DB_HOST=postgres \
+            --network host \
+            -e DB_HOST=localhost \
             -e DB_PORT=5432 \
             -e DB_USER=postgres \
             -e DB_PASSWORD=postgres \
@@ -59,12 +59,21 @@ jobs:
           echo "pgmq-rest failed to start"
           exit 1
 
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
       - name: Run tests
-        run: |
-          DB_HOST=postgres \
-          DB_PORT=5432 \
-          DB_USER=postgres \
-          DB_PASSWORD=postgres \
-          DB_NAME=postgres \
-          DB_POOL_SIZE=20 \
-          bun test
+        env:
+          # Database connection for direct database access in tests
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_NAME: postgres
+          DB_POOL_SIZE: 20
+        run: bun test

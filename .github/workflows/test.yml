@@ -37,13 +37,13 @@ jobs:
         run: |
           docker run -d \
             --name pgmq-rest \
-            --link pgmq:postgres \
-            -e DB_HOST=postgres \
+            -e DB_HOST=pgmq \
             -e DB_PORT=5432 \
             -e DB_USER=postgres \
             -e DB_PASSWORD=postgres \
             -e DB_NAME=postgres \
             -e DB_POOL_SIZE=20 \
+            -p 8080:8080 \
             pgmq-rest
 
       - name: Wait for pgmq-rest to be ready
@@ -61,7 +61,7 @@ jobs:
 
       - name: Run tests
         run: |
-          DB_HOST=postgres \
+          DB_HOST=pgmq \
           DB_PORT=5432 \
           DB_USER=postgres \
           DB_PASSWORD=postgres \

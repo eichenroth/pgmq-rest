@@ -23,5 +23,22 @@ A REST API for pgmq.
 
 2. Run the dev server:
     ```bash
-    DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASSWORD=postgres DB_NAME=postgres bun dev
+    DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASSWORD=postgres DB_NAME=postgres DB_POOL_SIZE=20 bun dev
+    ```
+
+3. Run the tests:
+    ```bash
+    DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASSWORD=postgres DB_NAME=postgres DB_POOL_SIZE=20 bun test
+    ```
+
+## Build
+
+1. Build the docker image:
+    ```bash
+    docker build -t pgmq-rest .
+    ```
+
+2. Run the docker container:
+    ```bash
+    docker run -d -p 8080:8080 --link pgmq:postgres pgmq-rest
     ```

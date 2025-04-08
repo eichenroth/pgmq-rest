@@ -59,6 +59,14 @@ jobs:
           echo "pgmq-rest failed to start"
           exit 1
 
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
       - name: Run tests
         run: |
           DB_HOST=pgmq \

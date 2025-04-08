@@ -37,7 +37,7 @@ jobs:
         run: |
           docker run -d \
             --name pgmq-rest \
-            -e DB_HOST=pgmq \
+            -e DB_HOST=localhost \
             -e DB_PORT=5432 \
             -e DB_USER=postgres \
             -e DB_PASSWORD=postgres \
@@ -46,10 +46,15 @@ jobs:
             -p 8080:8080 \
             pgmq-rest
 
+      - name: Get container IP
+        id: container
+        run: |
+          echo "ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pgmq-rest)" >> $GITHUB_OUTPUT
+
       - name: Wait for pgmq-rest to be ready
         run: |
           for i in {1..30}; do
-            if curl -s http://localhost:8080/ > /dev/null; then
+            if curl -s http://${{ steps.container.outputs.ip }}:8080/ > /dev/null; then
               echo "pgmq-rest is ready"
               exit 0
             fi
@@ -76,4 +81,5 @@ jobs:
           DB_PASSWORD: postgres
           DB_NAME: postgres
           DB_POOL_SIZE: 20
+          API_URL: http://${{ steps.container.outputs.ip }}:8080/api/v1
         run: bun test

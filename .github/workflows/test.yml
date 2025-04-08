@@ -68,11 +68,12 @@ jobs:
         run: bun install
 
       - name: Run tests
-        run: |
-          DB_HOST=pgmq \
-          DB_PORT=5432 \
-          DB_USER=postgres \
-          DB_PASSWORD=postgres \
-          DB_NAME=postgres \
-          DB_POOL_SIZE=20 \
-          bun test
+        env:
+          # Database connection for direct database access in tests
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_NAME: postgres
+          DB_POOL_SIZE: 20
+        run: bun test

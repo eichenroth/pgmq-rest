@@ -274,6 +274,7 @@ const app = new Elysia()
   // RETURNS void
 
   // ...
+  // delayed for now because it is a weird feature
 
   // pgmq.drop_queue (queue_name text)
   // RETURNS boolean

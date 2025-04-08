@@ -12,7 +12,7 @@ const db = new Pool({
   database: getEnv("DB_NAME", "postgres"),
   user: getEnv("DB_USER", "postgres"),
   password: getEnv("DB_PASSWORD", "postgres"),
-  max: 20,
+  max: parseInt(getEnv("DB_POOL_SIZE", "20"), 10),
 });
 
 export const withClient = async <T>(fn: (client: PoolClient) => Promise<T>): Promise<T> => {

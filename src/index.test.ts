@@ -139,6 +139,20 @@ describe("pgmq-rest", () => {
       expect(messages[0][4]).toEqual(testMessage);
     });
 
+    test("Read messages with polling", async () => {
+      const testMessage = { test: "read_with_poll_test" };
+      // Send message after a short delay to test polling
+      setTimeout(async () => {
+        await apiRequest("/send", { queue_name: queueName, msg: testMessage });
+      }, 100);
+
+      const messages = await apiRequest("/read_with_poll", { queue_name: queueName, vt: 30, qty: 5, max_poll_seconds: 2, poll_interval_ms: 100 });
+
+      expect(messages).toBeInstanceOf(Array);
+      expect(messages.length).toBe(1);
+      expect(messages[0][4]).toEqual(testMessage);
+    });
+
     test("Pop message", async () => {
       const testMessage = { test: "pop_test" };
 

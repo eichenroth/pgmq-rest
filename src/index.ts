@@ -82,10 +82,38 @@ const app = new Elysia()
       tags: ["Reading Messages"],
     },
   )
+
   // pgmq.read_with_poll (queue_name text, vt integer, qty integer, max_poll_seconds integer DEFAULT 5, poll_interval_ms integer DEFAULT 100, conditional jsonb DEFAULT '{}')
   // RETURNS SETOF pgmq.message_record
 
-  // ...
+  .post(
+    "/api/v1/read_with_poll",
+    async ({ body: { queue_name, vt, qty, max_poll_seconds = 5, poll_interval_ms = 100, conditional = {} } }) => {
+      return await withClient(async (client) => {
+        const result = await client.query<MessageRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT * FROM pgmq.read_with_poll($1::text, $2::integer, $3::integer, $4::integer, $5::integer, $6::jsonb)",
+            name: "read_with_poll",
+          },
+          [queue_name, vt, qty, max_poll_seconds, poll_interval_ms, conditional],
+        );
+        return result.rows.map((row) => [Number(row[0]), row[1], row[2], row[3], row[4], row[5]]);
+      });
+    },
+    {
+      body: t.Object({
+        queue_name: t.String(),
+        vt: t.Integer(),
+        qty: t.Integer(),
+        max_poll_seconds: t.Optional(t.Integer()),
+        poll_interval_ms: t.Optional(t.Integer()),
+        conditional: t.Optional(t.Any()),
+      }),
+      response: t.Array(MessageRecordSchema),
+      tags: ["Reading Messages"],
+    },
+  )
 
   // pgmq.pop (queue_name text)
   // RETURNS SETOF pgmq.message_record
@@ -152,7 +180,14 @@ const app = new Elysia()
     "/api/v1/purge_queue",
     async ({ body: { queue_name } }) => {
       return await withClient(async (client) => {
-        const result = await client.query<IdRecord>({ rowMode: "array", text: "SELECT pgmq.purge_queue($1::text)", name: "purge_queue" }, [queue_name]);
+        const result = await client.query<IdRecord>(
+          {
+            rowMode: "array",
+            text: "SELECT pgmq.purge_queue($1::text)",
+            name: "purge_queue",
+          },
+          [queue_name],
+        );
         return result.rows[0]?.[0] ? Number(result.rows[0][0]) : 0;
       });
     },
@@ -220,6 +255,7 @@ const app = new Elysia()
   // RETURNS void
 
   // ...
+  // delayed for now because it is not supported out of the box by the pgmq docker image
 
   // pgmq.create_unlogged (queue_name text)
   // RETURNS void

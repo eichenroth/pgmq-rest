@@ -1,0 +1,39 @@
+name: pgmq-rest-example
+
+services:
+  pgmq-rest:
+    image: eichenroth/pgmq-rest:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_POOL_SIZE=20
+    depends_on:
+      - postgres
+    networks:
+      - pgmq-network
+
+  postgres:
+    image: tembo.docker.scarf.sh/tembo/pg17-pgmq:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - pgmq-network
+
+volumes:
+  postgres_data:
+
+networks:
+  pgmq-network:
+    driver: bridge

@@ -10,7 +10,7 @@ const MetricRecordSchema = t.Tuple([t.String(), t.Number(), t.Nullable(t.Number(
 
 const app = new Elysia()
   .use(swagger({ path: "/docs", documentation: { info: { title: "pgmq-rest documentation", version: "1.0.0" } } }))
-  .get("/", () => "Server is running")
+  .get("/", ({ redirect }) => redirect("/docs"))
 
   // --- SENDING MESSAGES ---
 

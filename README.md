@@ -53,7 +53,7 @@ docker volume rm pgmq_data
 
 ## Examples
 
-See the [example](./example) directory for more detailed deployment scenarios, including a complete Docker Compose setup.
+See the [example](./example) directory for a more detailed deployment scenario with Docker Compose.
 
 ## Development Guide
 

@@ -399,6 +399,7 @@ result = RestClient.post '/api/v1/send_batch',
 
 p JSON.parse(result)
 
+
 ```
 
 ```java

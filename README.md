@@ -21,16 +21,17 @@ pgmq-rest provides a REST API for [PGMQ](https://github.com/tembo-io/pgmq) (Post
 
 ## Quick Start
 
-The fastest way to get started is using the provided Docker Compose example:
+The fastest way to get started is using Docker Compose:
 
 ```bash
 cd example
 docker-compose up -d
 ```
 
-This will start both the PostgreSQL database with pgmq extension and the pgmq-rest API service. The API will be available at http://localhost:8080.
-
-For more details about the example setup, see the [example directory](./example).
+To stop the stack:
+```bash
+docker-compose down -v
+```
 
 ## Usage Example
 
@@ -130,6 +131,41 @@ For detailed API documentation, visit http://localhost:8080/docs after starting 
 3. Run the tests:
     ```bash
     DB_HOST=localhost DB_PORT=5432 DB_USER=postgres DB_PASSWORD=postgres DB_NAME=postgres DB_POOL_SIZE=20 bun test
+    ```
+
+## Manual Setup
+
+If you prefer to run the services manually instead of using Docker Compose:
+
+1. Start the PGMQ container:
+    ```bash
+    docker run -d --name pgmq \
+      -p 5432:5432 \
+      -e POSTGRES_USER=postgres \
+      -e POSTGRES_PASSWORD=postgres \
+      -e POSTGRES_DB=postgres \
+      -v $(pwd)/init-pgmq.sql:/docker-entrypoint-initdb.d/init-pgmq.sql \
+      tembo.docker.scarf.sh/tembo/pg17-pgmq:latest
+    ```
+
+2. Run the pgmq-rest container:
+    ```bash
+    docker run -d --name pgmq-rest \
+      -p 8080:8080 \
+      -e DB_HOST=pgmq \
+      -e DB_PORT=5432 \
+      -e DB_NAME=postgres \
+      -e DB_USER=postgres \
+      -e DB_PASSWORD=postgres \
+      --link pgmq:postgres \
+      eichenroth/pgmq-rest:latest
+    ```
+
+3. Cleanup:
+    ```bash
+    docker stop pgmq-rest pgmq
+    docker rm pgmq-rest pgmq
+    docker volume rm pgmq_data
     ```
 
 ## Troubleshooting

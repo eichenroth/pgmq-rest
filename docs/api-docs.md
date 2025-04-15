@@ -1,403 +1,3103 @@
-<!DOCTYPE html>
-<html>
+---
+title: pgmq-rest documentation v1.0.0
+language_tabs:
+  - shell: Shell
+  - http: HTTP
+  - javascript: JavaScript
+  - python: Python
+  - ruby: Ruby
+  - java: Java
+  - go: Go
+language_clients:
+  - shell: ""
+  - http: ""
+  - javascript: ""
+  - python: ""
+  - ruby: ""
+  - java: ""
+  - go: ""
+toc_footers: []
+includes: []
+search: true
+highlight_theme: darkula
+headingLevel: 2
 
-<head>
-  <meta charset="utf8" />
-  <title>pgmq-rest documentation</title>
-  <!-- needed for adaptive design -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      padding: 0;
-      margin: 0;
+---
+
+<!-- Generator: Widdershins v4.0.1 -->
+
+<h1 id="pgmq-rest-documentation">pgmq-rest documentation v1.0.0</h1>
+
+> Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
+
+Development documentation
+
+<h1 id="pgmq-rest-documentation-default">Default</h1>
+
+## getIndex
+
+<a id="opIdgetIndex"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /
+
+```
+
+```http
+GET / HTTP/1.1
+
+```
+
+```javascript
+
+fetch('/',
+{
+  method: 'GET'
+
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+
+r = requests.get('/')
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+result = RestClient.get '/',
+  params: {
+  }
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("GET");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("GET", "/", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`GET /`
+
+<h3 id="getindex-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="pgmq-rest-documentation-sending-messages">Sending Messages</h1>
+
+## postApiV1Send
+
+<a id="opIdpostApiV1Send"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/send \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/send HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "msg": null,
+  "delay": 0
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/send',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/send', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/send',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/send");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
     }
-  </style>
-  <script src="https://cdn.redocly.com/redoc/v2.4.0/bundles/redoc.standalone.js"></script><style data-styled="true" data-styled-version="6.1.17">.hJuoxX{width:calc(100% - 40%);padding:0 40px;}/*!sc*/
-@media print,screen and (max-width: 75rem){.hJuoxX{width:100%;padding:40px 40px;}}/*!sc*/
-data-styled.g4[id="sc-fWnslK"]{content:"hJuoxX,"}/*!sc*/
-.bTqehu{padding:40px 0;}/*!sc*/
-.bTqehu:last-child{min-height:calc(100vh + 1px);}/*!sc*/
-.bTqehu>.bTqehu:last-child{min-height:initial;}/*!sc*/
-@media print,screen and (max-width: 75rem){.bTqehu{padding:0;}}/*!sc*/
-.ftfFlx{padding:40px 0;position:relative;}/*!sc*/
-.ftfFlx:last-child{min-height:calc(100vh + 1px);}/*!sc*/
-.ftfFlx>.ftfFlx:last-child{min-height:initial;}/*!sc*/
-@media print,screen and (max-width: 75rem){.ftfFlx{padding:0;}}/*!sc*/
-.ftfFlx:not(:last-of-type):after{position:absolute;bottom:0;width:100%;display:block;content:'';border-bottom:1px solid rgba(0, 0, 0, 0.2);}/*!sc*/
-data-styled.g5[id="sc-dIMoHT"]{content:"bTqehu,ftfFlx,"}/*!sc*/
-.rcGrS{width:40%;color:#ffffff;background-color:#263238;padding:0 40px;}/*!sc*/
-@media print,screen and (max-width: 75rem){.rcGrS{width:100%;padding:40px 40px;}}/*!sc*/
-data-styled.g6[id="sc-iQQCXo"]{content:"rcGrS,"}/*!sc*/
-.ijAuiF{background-color:#263238;}/*!sc*/
-data-styled.g7[id="sc-gDpztx"]{content:"ijAuiF,"}/*!sc*/
-.ipybeG{display:flex;width:100%;padding:0;}/*!sc*/
-@media print,screen and (max-width: 75rem){.ipybeG{flex-direction:column;}}/*!sc*/
-data-styled.g8[id="sc-kpOvIu"]{content:"ipybeG,"}/*!sc*/
-.Xavsg{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#333333;}/*!sc*/
-data-styled.g9[id="sc-icnseD"]{content:"Xavsg,"}/*!sc*/
-.ivNaNl{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;margin:0 0 20px;}/*!sc*/
-data-styled.g10[id="sc-jMsorb"]{content:"ivNaNl,"}/*!sc*/
-.esvUOo{color:#ffffff;}/*!sc*/
-data-styled.g12[id="sc-jJAtPt"]{content:"esvUOo,"}/*!sc*/
-.crXcll{border-bottom:1px solid rgba(38, 50, 56, 0.3);margin:1em 0 1em 0;color:rgba(38, 50, 56, 0.5);font-weight:normal;text-transform:uppercase;font-size:0.929em;line-height:20px;}/*!sc*/
-data-styled.g13[id="sc-cUiCeM"]{content:"crXcll,"}/*!sc*/
-.jRyfmD{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
-.jRyfmD:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
-h1:hover>.jRyfmD::before,h2:hover>.jRyfmD::before,.jRyfmD:hover::before{visibility:visible;}/*!sc*/
-data-styled.g14[id="sc-jScdur"]{content:"jRyfmD,"}/*!sc*/
-.enjdhx{height:18px;width:18px;min-width:18px;vertical-align:middle;float:right;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
-.hopFSn{height:20px;width:20px;min-width:20px;vertical-align:middle;float:right;transition:transform 0.2s ease-out;transform:rotateZ(0);}/*!sc*/
-.hopFSn polygon{fill:white;}/*!sc*/
-.jpPnqJ{height:18px;width:18px;min-width:18px;vertical-align:middle;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
-.bKFTgj{height:1.5em;width:1.5em;min-width:1.5em;vertical-align:middle;float:left;transition:transform 0.2s ease-out;transform:rotateZ(-90deg);}/*!sc*/
-.bKFTgj polygon{fill:#1d8127;}/*!sc*/
-data-styled.g15[id="sc-dcKlJK"]{content:"enjdhx,hopFSn,jpPnqJ,bKFTgj,"}/*!sc*/
-.hBAQrT{border-left:1px solid #7c7cbb;box-sizing:border-box;position:relative;padding:10px 10px 10px 0;}/*!sc*/
-@media screen and (max-width: 50rem){.hBAQrT{display:block;overflow:hidden;}}/*!sc*/
-tr:first-of-type>.hBAQrT,tr.last>.hBAQrT{border-left-width:0;background-position:top left;background-repeat:no-repeat;background-size:1px 100%;}/*!sc*/
-tr:first-of-type>.hBAQrT{background-image:linear-gradient(
-      to bottom,
-      transparent 0%,
-      transparent 22px,
-      #7c7cbb 22px,
-      #7c7cbb 100%
-    );}/*!sc*/
-tr.last>.hBAQrT{background-image:linear-gradient(
-      to bottom,
-      #7c7cbb 0%,
-      #7c7cbb 22px,
-      transparent 22px,
-      transparent 100%
-    );}/*!sc*/
-tr.last+tr>.hBAQrT{border-left-color:transparent;}/*!sc*/
-tr.last:first-child>.hBAQrT{background:none;border-left-color:transparent;}/*!sc*/
-data-styled.g18[id="sc-lixPIL"]{content:"hBAQrT,"}/*!sc*/
-.txOzo{vertical-align:top;line-height:20px;white-space:nowrap;font-size:13px;font-family:Courier,monospace;}/*!sc*/
-.txOzo.deprecated{text-decoration:line-through;color:#707070;}/*!sc*/
-data-styled.g20[id="sc-dFaThA"]{content:"txOzo,"}/*!sc*/
-.eVmPSM{border-bottom:1px solid #9fb4be;padding:10px 0;width:75%;box-sizing:border-box;}/*!sc*/
-tr.expanded .eVmPSM{border-bottom:none;}/*!sc*/
-@media screen and (max-width: 50rem){.eVmPSM{padding:0 20px;border-bottom:none;border-left:1px solid #7c7cbb;}tr.last>.eVmPSM{border-left:none;}}/*!sc*/
-data-styled.g21[id="sc-fjUQFl"]{content:"eVmPSM,"}/*!sc*/
-.dqwxee{color:#7c7cbb;font-family:Courier,monospace;margin-right:10px;}/*!sc*/
-.dqwxee::before{content:'';display:inline-block;vertical-align:middle;width:10px;height:1px;background:#7c7cbb;}/*!sc*/
-.dqwxee::after{content:'';display:inline-block;vertical-align:middle;width:1px;background:#7c7cbb;height:7px;}/*!sc*/
-data-styled.g22[id="sc-guGTOK"]{content:"dqwxee,"}/*!sc*/
-.gkzLzl{border-collapse:separate;border-radius:3px;font-size:14px;border-spacing:0;width:100%;}/*!sc*/
-.gkzLzl >tr{vertical-align:middle;}/*!sc*/
-@media screen and (max-width: 50rem){.gkzLzl{display:block;}.gkzLzl >tr,.gkzLzl >tbody>tr{display:block;}}/*!sc*/
-@media screen and (max-width: 50rem) and (-ms-high-contrast:none){.gkzLzl td{float:left;width:100%;}}/*!sc*/
-.gkzLzl .sc-hZARmv,.gkzLzl .sc-hZARmv .sc-hZARmv .sc-hZARmv,.gkzLzl .sc-hZARmv .sc-hZARmv .sc-hZARmv .sc-hZARmv .sc-hZARmv{margin:1em;margin-right:0;background:#fafafa;}/*!sc*/
-.gkzLzl .sc-hZARmv .sc-hZARmv,.gkzLzl .sc-hZARmv .sc-hZARmv .sc-hZARmv .sc-hZARmv,.gkzLzl .sc-hZARmv .sc-hZARmv .sc-hZARmv .sc-hZARmv .sc-hZARmv .sc-hZARmv{background:#ffffff;}/*!sc*/
-data-styled.g24[id="sc-dKKIkQ"]{content:"gkzLzl,"}/*!sc*/
-.ihptAH >ul{list-style:none;padding:0;margin:0;margin:0 -5px;}/*!sc*/
-.ihptAH >ul >li{padding:5px 10px;display:inline-block;background-color:#11171a;border-bottom:1px solid rgba(0, 0, 0, 0.5);cursor:pointer;text-align:center;outline:none;color:#ccc;margin:0 5px 5px 5px;border:1px solid #07090b;border-radius:5px;min-width:60px;font-size:0.9em;font-weight:bold;}/*!sc*/
-.ihptAH >ul >li.react-tabs__tab--selected{color:#333333;background:#ffffff;}/*!sc*/
-.ihptAH >ul >li.react-tabs__tab--selected:focus{outline:auto;}/*!sc*/
-.ihptAH >ul >li:only-child{flex:none;min-width:100px;}/*!sc*/
-.ihptAH >ul >li.tab-success{color:#1d8127;}/*!sc*/
-.ihptAH >ul >li.tab-redirect{color:#ffa500;}/*!sc*/
-.ihptAH >ul >li.tab-info{color:#87ceeb;}/*!sc*/
-.ihptAH >ul >li.tab-error{color:#d41f1c;}/*!sc*/
-.ihptAH >.react-tabs__tab-panel{background:#11171a;}/*!sc*/
-.ihptAH >.react-tabs__tab-panel>div,.ihptAH >.react-tabs__tab-panel>pre{padding:20px;margin:0;}/*!sc*/
-.ihptAH >.react-tabs__tab-panel>div>pre{padding:0;}/*!sc*/
-data-styled.g30[id="sc-brzPDJ"]{content:"ihptAH,"}/*!sc*/
-.gAHTYt code[class*='language-'],.gAHTYt pre[class*='language-']{text-shadow:0 -0.1em 0.2em black;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none;}/*!sc*/
-@media print{.gAHTYt code[class*='language-'],.gAHTYt pre[class*='language-']{text-shadow:none;}}/*!sc*/
-.gAHTYt pre[class*='language-']{padding:1em;margin:0.5em 0;overflow:auto;}/*!sc*/
-.gAHTYt .token.comment,.gAHTYt .token.prolog,.gAHTYt .token.doctype,.gAHTYt .token.cdata{color:hsl(30, 20%, 50%);}/*!sc*/
-.gAHTYt .token.punctuation{opacity:0.7;}/*!sc*/
-.gAHTYt .namespace{opacity:0.7;}/*!sc*/
-.gAHTYt .token.property,.gAHTYt .token.tag,.gAHTYt .token.number,.gAHTYt .token.constant,.gAHTYt .token.symbol{color:#4a8bb3;}/*!sc*/
-.gAHTYt .token.boolean{color:#e64441;}/*!sc*/
-.gAHTYt .token.selector,.gAHTYt .token.attr-name,.gAHTYt .token.string,.gAHTYt .token.char,.gAHTYt .token.builtin,.gAHTYt .token.inserted{color:#a0fbaa;}/*!sc*/
-.gAHTYt .token.selector+a,.gAHTYt .token.attr-name+a,.gAHTYt .token.string+a,.gAHTYt .token.char+a,.gAHTYt .token.builtin+a,.gAHTYt .token.inserted+a,.gAHTYt .token.selector+a:visited,.gAHTYt .token.attr-name+a:visited,.gAHTYt .token.string+a:visited,.gAHTYt .token.char+a:visited,.gAHTYt .token.builtin+a:visited,.gAHTYt .token.inserted+a:visited{color:#4ed2ba;text-decoration:underline;}/*!sc*/
-.gAHTYt .token.property.string{color:white;}/*!sc*/
-.gAHTYt .token.operator,.gAHTYt .token.entity,.gAHTYt .token.url,.gAHTYt .token.variable{color:hsl(40, 90%, 60%);}/*!sc*/
-.gAHTYt .token.atrule,.gAHTYt .token.attr-value,.gAHTYt .token.keyword{color:hsl(350, 40%, 70%);}/*!sc*/
-.gAHTYt .token.regex,.gAHTYt .token.important{color:#e90;}/*!sc*/
-.gAHTYt .token.important,.gAHTYt .token.bold{font-weight:bold;}/*!sc*/
-.gAHTYt .token.italic{font-style:italic;}/*!sc*/
-.gAHTYt .token.entity{cursor:help;}/*!sc*/
-.gAHTYt .token.deleted{color:red;}/*!sc*/
-data-styled.g32[id="sc-dTUlgT"]{content:"gAHTYt,"}/*!sc*/
-.elUMPN{opacity:0.7;transition:opacity 0.3s ease;text-align:right;}/*!sc*/
-.elUMPN:focus-within{opacity:1;}/*!sc*/
-.elUMPN >button{background-color:transparent;border:0;color:inherit;padding:2px 10px;font-family:Roboto,sans-serif;font-size:14px;line-height:1.5em;cursor:pointer;outline:0;}/*!sc*/
-.elUMPN >button :hover,.elUMPN >button :focus{background:rgba(255, 255, 255, 0.1);}/*!sc*/
-data-styled.g33[id="sc-lpbaSe"]{content:"elUMPN,"}/*!sc*/
-.plAcM{position:relative;}/*!sc*/
-data-styled.g37[id="sc-dZEakj"]{content:"plAcM,"}/*!sc*/
-.fHTLrJ{position:absolute;pointer-events:none;z-index:1;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);right:8px;margin:auto;text-align:center;}/*!sc*/
-.ccnFKG{position:absolute;pointer-events:none;z-index:1;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);right:8px;margin:auto;text-align:center;}/*!sc*/
-.ccnFKG polyline{color:white;}/*!sc*/
-data-styled.g38[id="sc-fpgwy"]{content:"fHTLrJ,ccnFKG,"}/*!sc*/
-.lgqimd{box-sizing:border-box;min-width:100px;outline:none;display:inline-block;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.5);vertical-align:bottom;padding:2px 0px 2px 6px;position:relative;width:auto;background:white;color:#263238;font-family:Montserrat,sans-serif;font-size:0.929em;line-height:1.5em;cursor:pointer;transition:border 0.25s ease,color 0.25s ease,box-shadow 0.25s ease;}/*!sc*/
-.lgqimd label{box-sizing:border-box;min-width:100px;outline:none;display:inline-block;font-family:Montserrat,sans-serif;color:#333333;vertical-align:bottom;width:auto;text-transform:none;padding:0 22px 0 4px;font-size:0.929em;line-height:1.5em;font-family:inherit;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}/*!sc*/
-.lgqimd .dropdown-select{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;border:none;appearance:none;cursor:pointer;color:#333333;line-height:inherit;font-family:inherit;}/*!sc*/
-.lgqimd:hover,.lgqimd:focus-within{border:1px solid #32329f;color:#32329f;box-shadow:0px 0px 0px 1px #32329f;}/*!sc*/
-data-styled.g39[id="sc-cNFqVt"]{content:"lgqimd,"}/*!sc*/
-.kbMKFl{margin-left:10px;text-transform:none;font-size:0.969em;font-size:1em;border:none;padding:0 1.2em 0 0;background:transparent;}/*!sc*/
-.kbMKFl:hover,.kbMKFl:focus-within{border:none;box-shadow:none;}/*!sc*/
-.kbMKFl:hover label,.kbMKFl:focus-within label{color:#32329f;text-shadow:0px 0px 0px #32329f;}/*!sc*/
-data-styled.g40[id="sc-kiMgGE"]{content:"kbMKFl,"}/*!sc*/
-.ewPyd{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
-.ewPyd p:last-child{margin-bottom:0;}/*!sc*/
-.ewPyd h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
-.ewPyd h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
-.ewPyd code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
-.ewPyd pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
-.ewPyd pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
-.ewPyd pre code:before,.ewPyd pre code:after{content:none;}/*!sc*/
-.ewPyd blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
-.ewPyd img{max-width:100%;box-sizing:content-box;}/*!sc*/
-.ewPyd ul,.ewPyd ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
-.ewPyd ul ul,.ewPyd ol ul,.ewPyd ul ol,.ewPyd ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
-.ewPyd table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
-.ewPyd table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
-.ewPyd table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
-.ewPyd table th,.ewPyd table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
-.ewPyd table th{text-align:left;font-weight:bold;}/*!sc*/
-.ewPyd .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
-.ewPyd .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
-.ewPyd h1:hover>.share-link::before,.ewPyd h2:hover>.share-link::before,.ewPyd .share-link:hover::before{visibility:visible;}/*!sc*/
-.ewPyd a{text-decoration:auto;color:#32329f;}/*!sc*/
-.ewPyd a:visited{color:#32329f;}/*!sc*/
-.ewPyd a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
-.hNgelr{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
-.hNgelr p:last-child{margin-bottom:0;}/*!sc*/
-.hNgelr p:first-child{margin-top:0;}/*!sc*/
-.hNgelr p:last-child{margin-bottom:0;}/*!sc*/
-.hNgelr p{display:inline-block;}/*!sc*/
-.hNgelr h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
-.hNgelr h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
-.hNgelr code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
-.hNgelr pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
-.hNgelr pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
-.hNgelr pre code:before,.hNgelr pre code:after{content:none;}/*!sc*/
-.hNgelr blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
-.hNgelr img{max-width:100%;box-sizing:content-box;}/*!sc*/
-.hNgelr ul,.hNgelr ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
-.hNgelr ul ul,.hNgelr ol ul,.hNgelr ul ol,.hNgelr ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
-.hNgelr table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
-.hNgelr table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
-.hNgelr table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
-.hNgelr table th,.hNgelr table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
-.hNgelr table th{text-align:left;font-weight:bold;}/*!sc*/
-.hNgelr .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
-.hNgelr .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
-.hNgelr h1:hover>.share-link::before,.hNgelr h2:hover>.share-link::before,.hNgelr .share-link:hover::before{visibility:visible;}/*!sc*/
-.hNgelr a{text-decoration:auto;color:#32329f;}/*!sc*/
-.hNgelr a:visited{color:#32329f;}/*!sc*/
-.hNgelr a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
-.iCKFAv{font-family:Roboto,sans-serif;font-weight:400;line-height:1.5em;}/*!sc*/
-.iCKFAv p:last-child{margin-bottom:0;}/*!sc*/
-.iCKFAv p:first-child{margin-top:0;}/*!sc*/
-.iCKFAv p:last-child{margin-bottom:0;}/*!sc*/
-.iCKFAv h1{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.85714em;line-height:1.6em;color:#32329f;margin-top:0;}/*!sc*/
-.iCKFAv h2{font-family:Montserrat,sans-serif;font-weight:400;font-size:1.57143em;line-height:1.6em;color:#333333;}/*!sc*/
-.iCKFAv code{color:#e53935;background-color:rgba(38, 50, 56, 0.05);font-family:Courier,monospace;border-radius:2px;border:1px solid rgba(38, 50, 56, 0.1);padding:0 5px;font-size:13px;font-weight:400;word-break:break-word;}/*!sc*/
-.iCKFAv pre{font-family:Courier,monospace;white-space:pre;background-color:#11171a;color:white;padding:20px;overflow-x:auto;line-height:normal;border-radius:0;border:1px solid rgba(38, 50, 56, 0.1);}/*!sc*/
-.iCKFAv pre code{background-color:transparent;color:white;padding:0;}/*!sc*/
-.iCKFAv pre code:before,.iCKFAv pre code:after{content:none;}/*!sc*/
-.iCKFAv blockquote{margin:0;margin-bottom:1em;padding:0 15px;color:#777;border-left:4px solid #ddd;}/*!sc*/
-.iCKFAv img{max-width:100%;box-sizing:content-box;}/*!sc*/
-.iCKFAv ul,.iCKFAv ol{padding-left:2em;margin:0;margin-bottom:1em;}/*!sc*/
-.iCKFAv ul ul,.iCKFAv ol ul,.iCKFAv ul ol,.iCKFAv ol ol{margin-bottom:0;margin-top:0;}/*!sc*/
-.iCKFAv table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all;border-collapse:collapse;border-spacing:0;margin-top:1.5em;margin-bottom:1.5em;}/*!sc*/
-.iCKFAv table tr{background-color:#fff;border-top:1px solid #ccc;}/*!sc*/
-.iCKFAv table tr:nth-child(2n){background-color:#fafafa;}/*!sc*/
-.iCKFAv table th,.iCKFAv table td{padding:6px 13px;border:1px solid #ddd;}/*!sc*/
-.iCKFAv table th{text-align:left;font-weight:bold;}/*!sc*/
-.iCKFAv .share-link{cursor:pointer;margin-left:-20px;padding:0;line-height:1;width:20px;display:inline-block;outline:0;}/*!sc*/
-.iCKFAv .share-link:before{content:'';width:15px;height:15px;background-size:contain;background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cGF0aCBmaWxsPSIjMDEwMTAxIiBkPSJNNDU5LjcgMjMzLjRsLTkwLjUgOTAuNWMtNTAgNTAtMTMxIDUwLTE4MSAwIC03LjktNy44LTE0LTE2LjctMTkuNC0yNS44bDQyLjEtNDIuMWMyLTIgNC41LTMuMiA2LjgtNC41IDIuOSA5LjkgOCAxOS4zIDE1LjggMjcuMiAyNSAyNSA2NS42IDI0LjkgOTAuNSAwbDkwLjUtOTAuNWMyNS0yNSAyNS02NS42IDAtOTAuNSAtMjQuOS0yNS02NS41LTI1LTkwLjUgMGwtMzIuMiAzMi4yYy0yNi4xLTEwLjItNTQuMi0xMi45LTgxLjYtOC45bDY4LjYtNjguNmM1MC01MCAxMzEtNTAgMTgxIDBDNTA5LjYgMTAyLjMgNTA5LjYgMTgzLjQgNDU5LjcgMjMzLjR6TTIyMC4zIDM4Mi4ybC0zMi4yIDMyLjJjLTI1IDI0LjktNjUuNiAyNC45LTkwLjUgMCAtMjUtMjUtMjUtNjUuNiAwLTkwLjVsOTAuNS05MC41YzI1LTI1IDY1LjUtMjUgOTAuNSAwIDcuOCA3LjggMTIuOSAxNy4yIDE1LjggMjcuMSAyLjQtMS40IDQuOC0yLjUgNi44LTQuNWw0Mi4xLTQyYy01LjQtOS4yLTExLjYtMTgtMTkuNC0yNS44IC01MC01MC0xMzEtNTAtMTgxIDBsLTkwLjUgOTAuNWMtNTAgNTAtNTAgMTMxIDAgMTgxIDUwIDUwIDEzMSA1MCAxODEgMGw2OC42LTY4LjZDMjc0LjYgMzk1LjEgMjQ2LjQgMzkyLjMgMjIwLjMgMzgyLjJ6Ii8+PC9zdmc+Cg==');opacity:0.5;visibility:hidden;display:inline-block;vertical-align:middle;}/*!sc*/
-.iCKFAv h1:hover>.share-link::before,.iCKFAv h2:hover>.share-link::before,.iCKFAv .share-link:hover::before{visibility:visible;}/*!sc*/
-.iCKFAv a{text-decoration:auto;color:#32329f;}/*!sc*/
-.iCKFAv a:visited{color:#32329f;}/*!sc*/
-.iCKFAv a:hover{color:#6868cf;text-decoration:auto;}/*!sc*/
-data-styled.g42[id="sc-fhPBcz"]{content:"ewPyd,hNgelr,iCKFAv,"}/*!sc*/
-.kfJzSr{display:inline;}/*!sc*/
-data-styled.g43[id="sc-dNpohg"]{content:"kfJzSr,"}/*!sc*/
-.jYcDQz{position:relative;}/*!sc*/
-data-styled.g44[id="sc-fsjlER"]{content:"jYcDQz,"}/*!sc*/
-.ihHZyU:hover>.sc-lpbaSe{opacity:1;}/*!sc*/
-data-styled.g49[id="sc-eZbeWy"]{content:"ihHZyU,"}/*!sc*/
-.JZxXP{font-family:Courier,monospace;font-size:13px;white-space:pre;contain:content;overflow-x:auto;}/*!sc*/
-.JZxXP .redoc-json code>.collapser{display:none;pointer-events:none;}/*!sc*/
-.JZxXP .callback-function{color:gray;}/*!sc*/
-.JZxXP .collapser:after{content:'-';cursor:pointer;}/*!sc*/
-.JZxXP .collapsed>.collapser:after{content:'+';cursor:pointer;}/*!sc*/
-.JZxXP .ellipsis:after{content:' … ';}/*!sc*/
-.JZxXP .collapsible{margin-left:2em;}/*!sc*/
-.JZxXP .hoverable{padding-top:1px;padding-bottom:1px;padding-left:2px;padding-right:2px;border-radius:2px;}/*!sc*/
-.JZxXP .hovered{background-color:rgba(235, 238, 249, 1);}/*!sc*/
-.JZxXP .collapser{background-color:transparent;border:0;color:#fff;font-family:Courier,monospace;font-size:13px;padding-right:6px;padding-left:6px;padding-top:0;padding-bottom:0;display:flex;align-items:center;justify-content:center;width:15px;height:15px;position:absolute;top:4px;left:-1.5em;cursor:default;user-select:none;-webkit-user-select:none;padding:2px;}/*!sc*/
-.JZxXP .collapser:focus{outline-color:#fff;outline-style:dotted;outline-width:1px;}/*!sc*/
-.JZxXP ul{list-style-type:none;padding:0px;margin:0px 0px 0px 26px;}/*!sc*/
-.JZxXP li{position:relative;display:block;}/*!sc*/
-.JZxXP .hoverable{display:inline-block;}/*!sc*/
-.JZxXP .selected{outline-style:solid;outline-width:1px;outline-style:dotted;}/*!sc*/
-.JZxXP .collapsed>.collapsible{display:none;}/*!sc*/
-.JZxXP .ellipsis{display:none;}/*!sc*/
-.JZxXP .collapsed>.ellipsis{display:inherit;}/*!sc*/
-data-styled.g50[id="sc-gDVcuj"]{content:"JZxXP,"}/*!sc*/
-.ktNiSp{font-family:Montserrat,sans-serif;font-size:12px;position:absolute;z-index:1;top:-11px;left:12px;font-weight:600;color:rgba(255,255,255,0.7);}/*!sc*/
-data-styled.g52[id="sc-fPyrPm"]{content:"ktNiSp,"}/*!sc*/
-.hMtTVz{position:relative;}/*!sc*/
-data-styled.g53[id="sc-bmCFzp"]{content:"hMtTVz,"}/*!sc*/
-.eHJULL{margin:0 0 10px 0;display:block;background-color:rgba(38,50,56,0.4);border:none;padding:0.9em 1.6em 0.9em 0.9em;box-shadow:none;}/*!sc*/
-.eHJULL label{color:#ffffff;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;font-size:1em;text-transform:none;border:none;}/*!sc*/
-.eHJULL:hover,.eHJULL:focus-within{border:none;box-shadow:none;background-color:rgba(38,50,56,0.7);}/*!sc*/
-data-styled.g54[id="sc-fMGxnE"]{content:"eHJULL,"}/*!sc*/
-.jPYqSz{margin-top:15px;}/*!sc*/
-data-styled.g56[id="sc-kmqAS"]{content:"jPYqSz,"}/*!sc*/
-.fbvEQZ.deprecated span.property-name{text-decoration:line-through;color:#707070;}/*!sc*/
-.fbvEQZ button{background-color:transparent;border:0;outline:0;font-size:13px;font-family:Courier,monospace;cursor:pointer;padding:0;color:#333333;}/*!sc*/
-.fbvEQZ button:focus{font-weight:600;}/*!sc*/
-.fbvEQZ .sc-dcKlJK{height:1.1em;width:1.1em;}/*!sc*/
-.fbvEQZ .sc-dcKlJK polygon{fill:#666;}/*!sc*/
-data-styled.g57[id="sc-gWMnJR"]{content:"fbvEQZ,"}/*!sc*/
-.hHoKqR{vertical-align:middle;font-size:13px;line-height:20px;}/*!sc*/
-data-styled.g58[id="sc-huvZk"]{content:"hHoKqR,"}/*!sc*/
-.jolyEu{color:rgba(102,102,102,0.9);}/*!sc*/
-data-styled.g59[id="sc-cLAbsH"]{content:"jolyEu,"}/*!sc*/
-.NHcBj{color:#666;}/*!sc*/
-data-styled.g60[id="sc-hlDTgW"]{content:"NHcBj,"}/*!sc*/
-.ecKepT{color:#d41f1c;font-size:0.9em;font-weight:normal;margin-left:20px;line-height:1;}/*!sc*/
-data-styled.g62[id="sc-icsLOd"]{content:"ecKepT,"}/*!sc*/
-.DDxJV{margin-top:0;margin-bottom:0.5em;}/*!sc*/
-data-styled.g92[id="sc-kiZvlW"]{content:"DDxJV,"}/*!sc*/
-.eMvmBu{width:9ex;display:inline-block;height:13px;line-height:13px;background-color:#333;border-radius:3px;background-repeat:no-repeat;background-position:6px 4px;font-size:7px;font-family:Verdana,sans-serif;color:white;text-transform:uppercase;text-align:center;font-weight:bold;vertical-align:middle;margin-right:6px;margin-top:2px;}/*!sc*/
-.eMvmBu.get{background-color:#2F8132;}/*!sc*/
-.eMvmBu.post{background-color:#186FAF;}/*!sc*/
-.eMvmBu.put{background-color:#95507c;}/*!sc*/
-.eMvmBu.options{background-color:#947014;}/*!sc*/
-.eMvmBu.patch{background-color:#bf581d;}/*!sc*/
-.eMvmBu.delete{background-color:#cc3333;}/*!sc*/
-.eMvmBu.basic{background-color:#707070;}/*!sc*/
-.eMvmBu.link{background-color:#07818F;}/*!sc*/
-.eMvmBu.head{background-color:#A23DAD;}/*!sc*/
-.eMvmBu.hook{background-color:#32329f;}/*!sc*/
-.eMvmBu.schema{background-color:#707070;}/*!sc*/
-data-styled.g100[id="sc-iwCIRy"]{content:"eMvmBu,"}/*!sc*/
-.jyJesI{margin:0;padding:0;}/*!sc*/
-.jyJesI:first-child{padding-bottom:32px;}/*!sc*/
-.sc-kNNXoD .sc-kNNXoD{font-size:0.929em;}/*!sc*/
-.jYWRJV{margin:0;padding:0;display:none;}/*!sc*/
-.jYWRJV:first-child{padding-bottom:32px;}/*!sc*/
-.sc-kNNXoD .sc-kNNXoD{font-size:0.929em;}/*!sc*/
-data-styled.g101[id="sc-kNNXoD"]{content:"jyJesI,jYWRJV,"}/*!sc*/
-.GjPJT{list-style:none inside none;overflow:hidden;text-overflow:ellipsis;padding:0;}/*!sc*/
-data-styled.g102[id="sc-bfkVnW"]{content:"GjPJT,"}/*!sc*/
-.icIHsb{cursor:pointer;color:#333333;margin:0;padding:12.5px 20px;display:flex;justify-content:space-between;font-family:Montserrat,sans-serif;background-color:#fafafa;}/*!sc*/
-.icIHsb:hover{color:#32329f;background-color:#ededed;}/*!sc*/
-.icIHsb .sc-dcKlJK{height:1.5em;width:1.5em;}/*!sc*/
-.icIHsb .sc-dcKlJK polygon{fill:#333333;}/*!sc*/
-.gaYgIh{cursor:pointer;color:#333333;margin:0;padding:12.5px 20px;display:flex;justify-content:space-between;font-family:Montserrat,sans-serif;font-size:0.929em;text-transform:none;background-color:#fafafa;}/*!sc*/
-.gaYgIh:hover{color:#32329f;background-color:#e1e1e1;}/*!sc*/
-.gaYgIh .sc-dcKlJK{height:1.5em;width:1.5em;}/*!sc*/
-.gaYgIh .sc-dcKlJK polygon{fill:#333333;}/*!sc*/
-data-styled.g103[id="sc-dSsMvJ"]{content:"icIHsb,gaYgIh,"}/*!sc*/
-.iqJPdR{display:inline-block;vertical-align:middle;width:calc(100% - 38px);overflow:hidden;text-overflow:ellipsis;}/*!sc*/
-data-styled.g104[id="sc-fzltTY"]{content:"iqJPdR,"}/*!sc*/
-.cEaUaF{font-size:0.8em;margin-top:10px;text-align:center;position:fixed;width:260px;bottom:0;background:#fafafa;}/*!sc*/
-.cEaUaF a,.cEaUaF a:visited,.cEaUaF a:hover{color:#333333!important;padding:5px 0;border-top:1px solid #e1e1e1;text-decoration:none;display:flex;align-items:center;justify-content:center;}/*!sc*/
-.cEaUaF img{width:15px;margin-right:5px;}/*!sc*/
-@media screen and (max-width: 50rem){.cEaUaF{width:100%;}}/*!sc*/
-data-styled.g105[id="sc-kHrqIz"]{content:"cEaUaF,"}/*!sc*/
-.bgkhSA{cursor:pointer;position:relative;margin-bottom:5px;}/*!sc*/
-data-styled.g111[id="sc-dYwfDW"]{content:"bgkhSA,"}/*!sc*/
-.hwDgZR{font-family:Courier,monospace;margin-left:10px;flex:1;overflow-x:hidden;text-overflow:ellipsis;}/*!sc*/
-data-styled.g112[id="sc-iuoeev"]{content:"hwDgZR,"}/*!sc*/
-.brWdLq{outline:0;color:inherit;width:100%;text-align:left;cursor:pointer;padding:10px 30px 10px 20px;border-radius:4px 4px 0 0;background-color:#11171a;display:flex;white-space:nowrap;align-items:center;border:1px solid transparent;border-bottom:0;transition:border-color 0.25s ease;}/*!sc*/
-.brWdLq ..sc-iuoeev{color:#ffffff;}/*!sc*/
-.brWdLq:focus{box-shadow:inset 0 2px 2px rgba(0, 0, 0, 0.45),0 2px 0 rgba(128, 128, 128, 0.25);}/*!sc*/
-data-styled.g113[id="sc-lnzCgU"]{content:"brWdLq,"}/*!sc*/
-.kZNoUr{font-size:0.929em;line-height:20px;background-color:#2F8132;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin:0;}/*!sc*/
-.dRhDQt{font-size:0.929em;line-height:20px;background-color:#186FAF;color:#ffffff;padding:3px 10px;text-transform:uppercase;font-family:Montserrat,sans-serif;margin:0;}/*!sc*/
-data-styled.g114[id="sc-etVRix"]{content:"kZNoUr,dRhDQt,"}/*!sc*/
-.gTtGYM{position:absolute;width:100%;z-index:100;background:#fafafa;color:#263238;box-sizing:border-box;box-shadow:0 0 6px rgba(0, 0, 0, 0.33);overflow:hidden;border-bottom-left-radius:4px;border-bottom-right-radius:4px;transition:all 0.25s ease;visibility:hidden;transform:translateY(-50%) scaleY(0);}/*!sc*/
-data-styled.g115[id="sc-dRZyXS"]{content:"gTtGYM,"}/*!sc*/
-.iajdpk{padding:10px;}/*!sc*/
-data-styled.g116[id="sc-inRxyr"]{content:"iajdpk,"}/*!sc*/
-.becpLA{padding:5px;border:1px solid #ccc;background:#fff;word-break:break-all;color:#32329f;}/*!sc*/
-.becpLA >span{color:#333333;}/*!sc*/
-data-styled.g117[id="sc-lhcVAQ"]{content:"becpLA,"}/*!sc*/
-.idyeCO{text-transform:lowercase;margin-left:0;line-height:1.5em;}/*!sc*/
-data-styled.g118[id="sc-enzkCt"]{content:"idyeCO,"}/*!sc*/
-.dwQYyf{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#1d8127;background-color:rgba(29,129,39,0.07);cursor:default;}/*!sc*/
-.dwQYyf:focus{outline:auto #1d8127;}/*!sc*/
-.dwQYyf::before{content:"—";font-weight:bold;width:1.5em;text-align:center;display:inline-block;vertical-align:top;}/*!sc*/
-.dwQYyf:focus{outline:0;}/*!sc*/
-.jeFRwJ{display:block;border:0;width:100%;text-align:left;padding:10px;border-radius:2px;margin-bottom:4px;line-height:1.5em;cursor:pointer;color:#1d8127;background-color:rgba(29,129,39,0.07);}/*!sc*/
-.jeFRwJ:focus{outline:auto #1d8127;}/*!sc*/
-data-styled.g120[id="sc-koGwOT"]{content:"dwQYyf,jeFRwJ,"}/*!sc*/
-.ljgvjV{vertical-align:top;}/*!sc*/
-data-styled.g123[id="sc-dHZbTr"]{content:"ljgvjV,"}/*!sc*/
-.dsRSAK{font-size:1.3em;padding:0.2em 0;margin:3em 0 1.1em;color:#333333;font-weight:normal;}/*!sc*/
-data-styled.g124[id="sc-fCdovG"]{content:"dsRSAK,"}/*!sc*/
-.jbbkDm{user-select:none;width:20px;height:20px;align-self:center;display:flex;flex-direction:column;color:#32329f;}/*!sc*/
-data-styled.g130[id="sc-djWYAM"]{content:"jbbkDm,"}/*!sc*/
-.kvyhOU{width:260px;background-color:#fafafa;overflow:hidden;display:flex;flex-direction:column;backface-visibility:hidden;height:100vh;position:sticky;position:-webkit-sticky;top:0;}/*!sc*/
-@media screen and (max-width: 50rem){.kvyhOU{position:fixed;z-index:20;width:100%;background:#fafafa;display:none;}}/*!sc*/
-@media print{.kvyhOU{display:none;}}/*!sc*/
-data-styled.g131[id="sc-dVElco"]{content:"kvyhOU,"}/*!sc*/
-.cfBNXY{outline:none;user-select:none;background-color:#f2f2f2;color:#32329f;display:none;cursor:pointer;position:fixed;right:20px;z-index:100;border-radius:50%;box-shadow:0 0 20px rgba(0, 0, 0, 0.3);bottom:44px;width:60px;height:60px;padding:0 20px;}/*!sc*/
-@media screen and (max-width: 50rem){.cfBNXY{display:flex;}}/*!sc*/
-.cfBNXY svg{color:#0065FB;}/*!sc*/
-@media print{.cfBNXY{display:none;}}/*!sc*/
-data-styled.g132[id="sc-irwjCN"]{content:"cfBNXY,"}/*!sc*/
-.cJUmVI{font-family:Roboto,sans-serif;font-size:14px;font-weight:400;line-height:1.5em;color:#333333;display:flex;position:relative;text-align:left;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;text-rendering:optimizeSpeed!important;tap-highlight-color:rgba(0, 0, 0, 0);text-size-adjust:100%;}/*!sc*/
-.cJUmVI *{box-sizing:border-box;-webkit-tap-highlight-color:rgba(255, 255, 255, 0);}/*!sc*/
-data-styled.g133[id="sc-ldfREC"]{content:"cJUmVI,"}/*!sc*/
-.eDQhjF{z-index:1;position:relative;overflow:hidden;width:calc(100% - 260px);contain:layout;}/*!sc*/
-@media print,screen and (max-width: 50rem){.eDQhjF{width:100%;}}/*!sc*/
-data-styled.g134[id="sc-ejCgGf"]{content:"eDQhjF,"}/*!sc*/
-.cCFEoS{background:#263238;position:absolute;top:0;bottom:0;right:0;width:calc((100% - 260px) * 0.4);}/*!sc*/
-@media print,screen and (max-width: 75rem){.cCFEoS{display:none;}}/*!sc*/
-data-styled.g135[id="sc-dPhEwk"]{content:"cCFEoS,"}/*!sc*/
-.hnCKSs{padding:5px 0;}/*!sc*/
-data-styled.g136[id="sc-ikZCWJ"]{content:"hnCKSs,"}/*!sc*/
-.erbREP{width:calc(100% - 40px);box-sizing:border-box;margin:0 20px;padding:5px 10px 5px 20px;border:0;border-bottom:1px solid #e1e1e1;font-family:Roboto,sans-serif;font-weight:bold;font-size:13px;color:#333333;background-color:transparent;outline:none;}/*!sc*/
-data-styled.g137[id="sc-kWJkYy"]{content:"erbREP,"}/*!sc*/
-.jutLom{position:absolute;left:20px;height:1.8em;width:0.9em;}/*!sc*/
-.jutLom path{fill:#333333;}/*!sc*/
-data-styled.g138[id="sc-edfAab"]{content:"jutLom,"}/*!sc*/
-</style>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
-</head>
 
-<body>
-  
-      <div id="redoc"><div class="sc-ldfREC cJUmVI redoc-wrap"><div class="sc-dVElco kvyhOU menu-content" style="top:0px;height:calc(100vh - 0px)"><div role="search" class="sc-ikZCWJ hnCKSs"><svg class="sc-edfAab jutLom search-icon" version="1.1" viewBox="0 0 1000 1000" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px"><path d="M968.2,849.4L667.3,549c83.9-136.5,66.7-317.4-51.7-435.6C477.1-25,252.5-25,113.9,113.4c-138.5,138.3-138.5,362.6,0,501C219.2,730.1,413.2,743,547.6,666.5l301.9,301.4c43.6,43.6,76.9,14.9,104.2-12.4C981,928.3,1011.8,893,968.2,849.4z M524.5,522c-88.9,88.7-233,88.7-321.8,0c-88.9-88.7-88.9-232.6,0-321.3c88.9-88.7,233-88.7,321.8,0C613.4,289.4,613.4,433.3,524.5,522z"></path></svg><input placeholder="Search..." aria-label="Search" type="text" class="sc-kWJkYy erbREP search-input" value=""/></div><div class="sc-dZEakj plAcM scrollbar-container undefined"><ul role="menu" class="sc-kNNXoD jyJesI"><li tabindex="0" depth="2" data-item-id="operation/getIndex" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="get" class="sc-iwCIRy eMvmBu operation-type get">get</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">getIndex</span></label></li><li tabindex="0" depth="1" data-item-id="tag/Sending-Messages" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ gaYgIh -depth1"><span width="calc(100% - 38px)" title="Sending Messages" class="sc-fzltTY iqJPdR">Sending Messages</span><svg class="sc-dcKlJK enjdhx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></label><ul class="sc-kNNXoD jYWRJV"><li tabindex="0" depth="2" data-item-id="tag/Sending-Messages/operation/postApiV1Send" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Send</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Sending-Messages/operation/postApiV1Send_batch" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Send_batch</span></label></li></ul></li><li tabindex="0" depth="1" data-item-id="tag/Reading-Messages" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ gaYgIh -depth1"><span width="calc(100% - 38px)" title="Reading Messages" class="sc-fzltTY iqJPdR">Reading Messages</span><svg class="sc-dcKlJK enjdhx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></label><ul class="sc-kNNXoD jYWRJV"><li tabindex="0" depth="2" data-item-id="tag/Reading-Messages/operation/postApiV1Read" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Read</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Reading-Messages/operation/postApiV1Read_with_poll" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Read_with_poll</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Reading-Messages/operation/postApiV1Pop" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Pop</span></label></li></ul></li><li tabindex="0" depth="1" data-item-id="tag/Deleting-Messages" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ gaYgIh -depth1"><span width="calc(100% - 38px)" title="Deleting Messages" class="sc-fzltTY iqJPdR">Deleting Messages</span><svg class="sc-dcKlJK enjdhx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></label><ul class="sc-kNNXoD jYWRJV"><li tabindex="0" depth="2" data-item-id="tag/Deleting-Messages/operation/postApiV1Delete" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Delete</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Deleting-Messages/operation/postApiV1Delete_batch" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Delete_batch</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Deleting-Messages/operation/postApiV1Purge_queue" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Purge_queue</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Deleting-Messages/operation/postApiV1Archive" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Archive</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Deleting-Messages/operation/postApiV1Archive_batch" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Archive_batch</span></label></li></ul></li><li tabindex="0" depth="1" data-item-id="tag/Queue-Management" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ gaYgIh -depth1"><span width="calc(100% - 38px)" title="Queue Management" class="sc-fzltTY iqJPdR">Queue Management</span><svg class="sc-dcKlJK enjdhx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></label><ul class="sc-kNNXoD jYWRJV"><li tabindex="0" depth="2" data-item-id="tag/Queue-Management/operation/postApiV1Create" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Create</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Queue-Management/operation/postApiV1Create_unlogged" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Create_unlogged</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Queue-Management/operation/postApiV1Drop_queue" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Drop_queue</span></label></li></ul></li><li tabindex="0" depth="1" data-item-id="tag/Utilities" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ gaYgIh -depth1"><span width="calc(100% - 38px)" title="Utilities" class="sc-fzltTY iqJPdR">Utilities</span><svg class="sc-dcKlJK enjdhx" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></label><ul class="sc-kNNXoD jYWRJV"><li tabindex="0" depth="2" data-item-id="tag/Utilities/operation/postApiV1Set_vt" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Set_vt</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Utilities/operation/postApiV1List_queues" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1List_queues</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Utilities/operation/postApiV1Metrics" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Metrics</span></label></li><li tabindex="0" depth="2" data-item-id="tag/Utilities/operation/postApiV1Metrics_all" role="menuitem" class="sc-bfkVnW GjPJT"><label class="sc-dSsMvJ icIHsb -depth2"><span type="post" class="sc-iwCIRy eMvmBu operation-type post">post</span><span tabindex="0" width="calc(100% - 38px)" class="sc-fzltTY iqJPdR">postApiV1Metrics_all</span></label></li></ul></li></ul><div class="sc-kHrqIz cEaUaF"><a target="_blank" rel="noopener noreferrer" href="https://redocly.com/redoc/">API docs by Redocly</a></div></div></div><div class="sc-irwjCN cfBNXY"><div class="sc-djWYAM jbbkDm"><svg class="" style="transform:translate(2px, -4px) rotate(180deg);transition:transform 0.2s ease" viewBox="0 0 926.23699 573.74994" version="1.1" x="0px" y="0px" width="15" height="15"><g transform="translate(904.92214,-879.1482)"><path d="
-          m -673.67664,1221.6502 -231.2455,-231.24803 55.6165,
-          -55.627 c 30.5891,-30.59485 56.1806,-55.627 56.8701,-55.627 0.6894,
-          0 79.8637,78.60862 175.9427,174.68583 l 174.6892,174.6858 174.6892,
-          -174.6858 c 96.079,-96.07721 175.253196,-174.68583 175.942696,
-          -174.68583 0.6895,0 26.281,25.03215 56.8701,
-          55.627 l 55.6165,55.627 -231.245496,231.24803 c -127.185,127.1864
-          -231.5279,231.248 -231.873,231.248 -0.3451,0 -104.688,
-          -104.0616 -231.873,-231.248 z
-        " fill="currentColor"></path></g></svg><svg class="" style="transform:translate(2px, 4px);transition:transform 0.2s ease" viewBox="0 0 926.23699 573.74994" version="1.1" x="0px" y="0px" width="15" height="15"><g transform="translate(904.92214,-879.1482)"><path d="
-          m -673.67664,1221.6502 -231.2455,-231.24803 55.6165,
-          -55.627 c 30.5891,-30.59485 56.1806,-55.627 56.8701,-55.627 0.6894,
-          0 79.8637,78.60862 175.9427,174.68583 l 174.6892,174.6858 174.6892,
-          -174.6858 c 96.079,-96.07721 175.253196,-174.68583 175.942696,
-          -174.68583 0.6895,0 26.281,25.03215 56.8701,
-          55.627 l 55.6165,55.627 -231.245496,231.24803 c -127.185,127.1864
-          -231.5279,231.248 -231.873,231.248 -0.3451,0 -104.688,
-          -104.0616 -231.873,-231.248 z
-        " fill="currentColor"></path></g></svg></div></div><div class="sc-ejCgGf eDQhjF api-content"><div class="sc-dIMoHT bTqehu"><div class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX api-info"><h1 class="sc-icnseD sc-kiZvlW Xavsg DDxJV">pgmq-rest documentation<!-- --> <span>(<!-- -->1.0.0<!-- -->)</span></h1><p>Download OpenAPI specification<!-- -->:</p><div class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><div data-role="redoc-summary" html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><div data-role="redoc-description" html="&lt;p&gt;Development documentation&lt;/p&gt;
-" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"><p>Development documentation</p>
-</div></div></div></div><div id="operation/getIndex" data-section-id="operation/getIndex" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/getIndex" id="operation/getIndex" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#operation/getIndex" aria-label="operation/getIndex"></a>getIndex<!-- --> </h2><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT dwQYyf" disabled=""><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="get" class="sc-etVRix kZNoUr http-verb get">get</span><span class="sc-iuoeev hwDgZR">/</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/</div></div></div></div></div></div></div></div><div id="tag/Sending-Messages" data-section-id="tag/Sending-Messages" class="sc-dIMoHT bTqehu"><div class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Sending-Messages" aria-label="tag/Sending-Messages"></a>Sending Messages</h2></div></div></div><div id="tag/Sending-Messages/operation/postApiV1Send" data-section-id="tag/Sending-Messages/operation/postApiV1Send" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Send" id="operation/postApiV1Send" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Sending-Messages/operation/postApiV1Send" aria-label="tag/Sending-Messages/operation/postApiV1Send"></a>postApiV1Send<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="msg" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">msg</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">any</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="delay" class="sc-lixPIL sc-dFaThA sc-gWMnJR hBAQrT txOzo fbvEQZ"><span class="sc-guGTOK dqwxee"></span><button aria-label="expand delay"><span class="property-name">delay</span><svg class="sc-dcKlJK jpPnqJ" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string or integer</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/send</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/send</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«Riipa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Riipa»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Riipa»0" aria-labelledby="tab«Riipa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"msg"</span>: <span class="token keyword">null</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"delay"</span>: <span class="token number">0</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«Rjipa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rjipa»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rjipa»0" aria-labelledby="tab«Rjipa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><span class="token number">0</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Sending-Messages/operation/postApiV1Send_batch" data-section-id="tag/Sending-Messages/operation/postApiV1Send_batch" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Send_batch" id="operation/postApiV1Send_batch" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Sending-Messages/operation/postApiV1Send_batch" aria-label="tag/Sending-Messages/operation/postApiV1Send_batch"></a>postApiV1Send_batch<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="msgs" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">msgs</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu">Array of </span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">any</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="delay" class="sc-lixPIL sc-dFaThA sc-gWMnJR hBAQrT txOzo fbvEQZ"><span class="sc-guGTOK dqwxee"></span><button aria-label="expand delay"><span class="property-name">delay</span><svg class="sc-dcKlJK jpPnqJ" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string or integer</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/send_batch</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/send_batch</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«Rij9a»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rij9a»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rij9a»0" aria-labelledby="tab«Rij9a»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"msgs"</span>: <button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token keyword">null</span></div></li></ul><span class="token punctuation">]</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"delay"</span>: <span class="token number">0</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«Rjj9a»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rjj9a»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rjj9a»0" aria-labelledby="tab«Rjj9a»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><span class="token number">0</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Reading-Messages" data-section-id="tag/Reading-Messages" class="sc-dIMoHT bTqehu"><div class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Reading-Messages" aria-label="tag/Reading-Messages"></a>Reading Messages</h2></div></div></div><div id="tag/Reading-Messages/operation/postApiV1Read" data-section-id="tag/Reading-Messages/operation/postApiV1Read" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Read" id="operation/postApiV1Read" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Reading-Messages/operation/postApiV1Read" aria-label="tag/Reading-Messages/operation/postApiV1Read"></a>postApiV1Read<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="vt" class="sc-lixPIL sc-dFaThA sc-gWMnJR hBAQrT txOzo fbvEQZ"><span class="sc-guGTOK dqwxee"></span><button aria-label="expand vt"><span class="property-name">vt</span><svg class="sc-dcKlJK jpPnqJ" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string or integer</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="qty" class="sc-lixPIL sc-dFaThA sc-gWMnJR hBAQrT txOzo fbvEQZ"><span class="sc-guGTOK dqwxee"></span><button aria-label="expand qty"><span class="property-name">qty</span><svg class="sc-dcKlJK jpPnqJ" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string or integer</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="conditional" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">conditional</span></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">any</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/read</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/read</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«Riipq»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Riipq»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Riipq»0" aria-labelledby="tab«Riipq»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"vt"</span>: <span class="token number">0</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"qty"</span>: <span class="token number">0</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"conditional"</span>: <span class="token keyword">null</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«Rjipq»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rjipq»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rjipq»0" aria-labelledby="tab«Rjipq»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span>,</div></li><li><div class="hoverable collapsed"><span class="token keyword">null</span>,</div></li><li><div class="hoverable collapsed"><span class="token keyword">null</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Reading-Messages/operation/postApiV1Read_with_poll" data-section-id="tag/Reading-Messages/operation/postApiV1Read_with_poll" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Read_with_poll" id="operation/postApiV1Read_with_poll" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Reading-Messages/operation/postApiV1Read_with_poll" aria-label="tag/Reading-Messages/operation/postApiV1Read_with_poll"></a>postApiV1Read_with_poll<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="vt" class="sc-lixPIL sc-dFaThA sc-gWMnJR hBAQrT txOzo fbvEQZ"><span class="sc-guGTOK dqwxee"></span><button aria-label="expand vt"><span class="property-name">vt</span><svg class="sc-dcKlJK jpPnqJ" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string or integer</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="qty" class="sc-lixPIL sc-dFaThA sc-gWMnJR hBAQrT txOzo fbvEQZ"><span class="sc-guGTOK dqwxee"></span><button aria-label="expand qty"><span class="property-name">qty</span><svg class="sc-dcKlJK jpPnqJ" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string or integer</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="max_poll_seconds" class="sc-lixPIL sc-dFaThA sc-gWMnJR hBAQrT txOzo fbvEQZ"><span class="sc-guGTOK dqwxee"></span><button aria-label="expand max_poll_seconds"><span class="property-name">max_poll_seconds</span><svg class="sc-dcKlJK jpPnqJ" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string or integer</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="poll_interval_ms" class="sc-lixPIL sc-dFaThA sc-gWMnJR hBAQrT txOzo fbvEQZ"><span class="sc-guGTOK dqwxee"></span><button aria-label="expand poll_interval_ms"><span class="property-name">poll_interval_ms</span><svg class="sc-dcKlJK jpPnqJ" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string or integer</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="conditional" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">conditional</span></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">any</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/read_with_poll</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/read_with_poll</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«Rij9q»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rij9q»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rij9q»0" aria-labelledby="tab«Rij9q»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"vt"</span>: <span class="token number">0</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"qty"</span>: <span class="token number">0</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"max_poll_seconds"</span>: <span class="token number">0</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"poll_interval_ms"</span>: <span class="token number">0</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"conditional"</span>: <span class="token keyword">null</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«Rjj9q»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rjj9q»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rjj9q»0" aria-labelledby="tab«Rjj9q»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span>,</div></li><li><div class="hoverable collapsed"><span class="token keyword">null</span>,</div></li><li><div class="hoverable collapsed"><span class="token keyword">null</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Reading-Messages/operation/postApiV1Pop" data-section-id="tag/Reading-Messages/operation/postApiV1Pop" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Pop" id="operation/postApiV1Pop" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Reading-Messages/operation/postApiV1Pop" aria-label="tag/Reading-Messages/operation/postApiV1Pop"></a>postApiV1Pop<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class="last "><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/pop</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/pop</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«Rijpq»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rijpq»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rijpq»0" aria-labelledby="tab«Rijpq»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«Rjjpq»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rjjpq»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rjjpq»0" aria-labelledby="tab«Rjjpq»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span>,</div></li><li><div class="hoverable collapsed"><span class="token keyword">null</span>,</div></li><li><div class="hoverable collapsed"><span class="token keyword">null</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Deleting-Messages" data-section-id="tag/Deleting-Messages" class="sc-dIMoHT bTqehu"><div class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Deleting-Messages" aria-label="tag/Deleting-Messages"></a>Deleting Messages</h2></div></div></div><div id="tag/Deleting-Messages/operation/postApiV1Delete" data-section-id="tag/Deleting-Messages/operation/postApiV1Delete" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Delete" id="operation/postApiV1Delete" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Deleting-Messages/operation/postApiV1Delete" aria-label="tag/Deleting-Messages/operation/postApiV1Delete"></a>postApiV1Delete<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="msg_id" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">msg_id</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">number</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/delete</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/delete</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«R154qa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R154qa»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R154qa»0" aria-labelledby="tab«R154qa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"msg_id"</span>: <span class="token number">0</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R174qa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R174qa»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R174qa»0" aria-labelledby="tab«R174qa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><span class="token boolean">true</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Deleting-Messages/operation/postApiV1Delete_batch" data-section-id="tag/Deleting-Messages/operation/postApiV1Delete_batch" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Delete_batch" id="operation/postApiV1Delete_batch" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Deleting-Messages/operation/postApiV1Delete_batch" aria-label="tag/Deleting-Messages/operation/postApiV1Delete_batch"></a>postApiV1Delete_batch<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="msg_ids" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">msg_ids</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu">Array of </span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">numbers</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/delete_batch</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/delete_batch</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«R155aa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R155aa»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R155aa»0" aria-labelledby="tab«R155aa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"msg_ids"</span>: <button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token number">0</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R175aa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R175aa»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R175aa»0" aria-labelledby="tab«R175aa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><span class="token number">0</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Deleting-Messages/operation/postApiV1Purge_queue" data-section-id="tag/Deleting-Messages/operation/postApiV1Purge_queue" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Purge_queue" id="operation/postApiV1Purge_queue" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Deleting-Messages/operation/postApiV1Purge_queue" aria-label="tag/Deleting-Messages/operation/postApiV1Purge_queue"></a>postApiV1Purge_queue<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class="last "><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/purge_queue</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/purge_queue</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«R155qa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R155qa»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R155qa»0" aria-labelledby="tab«R155qa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R175qa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R175qa»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R175qa»0" aria-labelledby="tab«R175qa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button>0</div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><span class="token number">0</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Deleting-Messages/operation/postApiV1Archive" data-section-id="tag/Deleting-Messages/operation/postApiV1Archive" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Archive" id="operation/postApiV1Archive" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Deleting-Messages/operation/postApiV1Archive" aria-label="tag/Deleting-Messages/operation/postApiV1Archive"></a>postApiV1Archive<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="msg_id" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">msg_id</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">number</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/archive</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/archive</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«R156aa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R156aa»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R156aa»0" aria-labelledby="tab«R156aa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"msg_id"</span>: <span class="token number">0</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R176aa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R176aa»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R176aa»0" aria-labelledby="tab«R176aa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><span class="token boolean">true</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Deleting-Messages/operation/postApiV1Archive_batch" data-section-id="tag/Deleting-Messages/operation/postApiV1Archive_batch" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Archive_batch" id="operation/postApiV1Archive_batch" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Deleting-Messages/operation/postApiV1Archive_batch" aria-label="tag/Deleting-Messages/operation/postApiV1Archive_batch"></a>postApiV1Archive_batch<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="msg_ids" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">msg_ids</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu">Array of </span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">numbers</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/archive_batch</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/archive_batch</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«R156qa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R156qa»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R156qa»0" aria-labelledby="tab«R156qa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"msg_ids"</span>: <button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token number">0</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R176qa»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R176qa»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R176qa»0" aria-labelledby="tab«R176qa»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><span class="token number">0</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Queue-Management" data-section-id="tag/Queue-Management" class="sc-dIMoHT bTqehu"><div class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Queue-Management" aria-label="tag/Queue-Management"></a>Queue Management</h2></div></div></div><div id="tag/Queue-Management/operation/postApiV1Create" data-section-id="tag/Queue-Management/operation/postApiV1Create" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Create" id="operation/postApiV1Create" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Queue-Management/operation/postApiV1Create" aria-label="tag/Queue-Management/operation/postApiV1Create"></a>postApiV1Create<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class="last "><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT dwQYyf" disabled=""><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/create</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/create</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«Riiqq»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Riiqq»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Riiqq»0" aria-labelledby="tab«Riiqq»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Queue-Management/operation/postApiV1Create_unlogged" data-section-id="tag/Queue-Management/operation/postApiV1Create_unlogged" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Create_unlogged" id="operation/postApiV1Create_unlogged" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Queue-Management/operation/postApiV1Create_unlogged" aria-label="tag/Queue-Management/operation/postApiV1Create_unlogged"></a>postApiV1Create_unlogged<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class="last "><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT dwQYyf" disabled=""><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/create_unlogged</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/create_unlogged</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«Rijaq»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rijaq»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rijaq»0" aria-labelledby="tab«Rijaq»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Queue-Management/operation/postApiV1Drop_queue" data-section-id="tag/Queue-Management/operation/postApiV1Drop_queue" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Drop_queue" id="operation/postApiV1Drop_queue" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Queue-Management/operation/postApiV1Drop_queue" aria-label="tag/Queue-Management/operation/postApiV1Drop_queue"></a>postApiV1Drop_queue<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class="last "><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/drop_queue</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/drop_queue</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«Rijqq»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rijqq»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rijqq»0" aria-labelledby="tab«Rijqq»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«Rjjqq»0" aria-selected="true" aria-disabled="false" aria-controls="panel«Rjjqq»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«Rjjqq»0" aria-labelledby="tab«Rjjqq»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><span class="token boolean">true</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Utilities" data-section-id="tag/Utilities" class="sc-dIMoHT bTqehu"><div class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Utilities" aria-label="tag/Utilities"></a>Utilities</h2></div></div></div><div id="tag/Utilities/operation/postApiV1Set_vt" data-section-id="tag/Utilities/operation/postApiV1Set_vt" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Set_vt" id="operation/postApiV1Set_vt" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Utilities/operation/postApiV1Set_vt" aria-label="tag/Utilities/operation/postApiV1Set_vt"></a>postApiV1Set_vt<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class=""><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class=""><td kind="field" title="msg_id" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">msg_id</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">number</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr><tr class="last "><td kind="field" title="vt_offset" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">vt_offset</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">number</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/set_vt</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/set_vt</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«R154ra»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R154ra»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R154ra»0" aria-labelledby="tab«R154ra»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"msg_id"</span>: <span class="token number">0</span><span class="token punctuation">,</span></div></li><li><div class="hoverable "><span class="property token string">"vt_offset"</span>: <span class="token number">0</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R174ra»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R174ra»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R174ra»0" aria-labelledby="tab«R174ra»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span>,</div></li><li><div class="hoverable collapsed"><span class="token keyword">null</span>,</div></li><li><div class="hoverable collapsed"><span class="token keyword">null</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Utilities/operation/postApiV1List_queues" data-section-id="tag/Utilities/operation/postApiV1List_queues" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1List_queues" id="operation/postApiV1List_queues" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Utilities/operation/postApiV1List_queues" aria-label="tag/Utilities/operation/postApiV1List_queues"></a>postApiV1List_queues<!-- --> </h2><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/list_queues</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/list_queues</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R175ba»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R175ba»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R175ba»0" aria-labelledby="tab«R175ba»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token string">&quot;string&quot;</span>,</div></li><li><div class="hoverable collapsed"><span class="token boolean">true</span>,</div></li><li><div class="hoverable collapsed"><span class="token boolean">true</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Utilities/operation/postApiV1Metrics" data-section-id="tag/Utilities/operation/postApiV1Metrics" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Metrics" id="operation/postApiV1Metrics" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Utilities/operation/postApiV1Metrics" aria-label="tag/Utilities/operation/postApiV1Metrics"></a>postApiV1Metrics<!-- --> </h2><h5 class="sc-cUiCeM crXcll">Request Body schema: <div class="sc-cNFqVt sc-kiMgGE lgqimd kbMKFl"><svg class="sc-fpgwy fHTLrJ" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div><div class="sc-huvZk sc-icsLOd sc-enzkCt hHoKqR ecKepT idyeCO">required</div></h5><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt ewPyd"></div><table class="sc-dKKIkQ gkzLzl"><tbody><tr class="last "><td kind="field" title="queue_name" class="sc-lixPIL sc-dFaThA hBAQrT txOzo"><span class="sc-guGTOK dqwxee"></span><span class="property-name">queue_name</span><div class="sc-huvZk sc-icsLOd hHoKqR ecKepT">required</div></td><td class="sc-fjUQFl eVmPSM"><div><div><span class="sc-huvZk sc-cLAbsH hHoKqR jolyEu"></span><span class="sc-huvZk sc-hlDTgW hHoKqR NHcBj">string</span></div> <div><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div></div></div></td></tr></tbody></table><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/metrics</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/metrics</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Request samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="react-tabs__tab react-tabs__tab--selected" role="tab" id="tab«R155ra»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R155ra»0" tabindex="0" data-rttab="true">Payload</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R155ra»0" aria-labelledby="tab«R155ra»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">{</span><span class="ellipsis"></span><ul class="obj collapsible"><li><div class="hoverable "><span class="property token string">"queue_name"</span>: <span class="token string">&quot;string&quot;</span></div></li></ul><span class="token punctuation">}</span></code></div></div></div></div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R175ra»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R175ra»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R175ra»0" aria-labelledby="tab«R175ra»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token string">&quot;string&quot;</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div><div id="tag/Utilities/operation/postApiV1Metrics_all" data-section-id="tag/Utilities/operation/postApiV1Metrics_all" class="sc-dIMoHT ftfFlx"><div data-section-id="operation/postApiV1Metrics_all" id="operation/postApiV1Metrics_all" class="sc-kpOvIu ipybeG"><div class="sc-fWnslK hJuoxX"><h2 class="sc-jMsorb ivNaNl"><a class="sc-jScdur jRyfmD" href="#tag/Utilities/operation/postApiV1Metrics_all" aria-label="tag/Utilities/operation/postApiV1Metrics_all"></a>postApiV1Metrics_all<!-- --> </h2><div><h3 class="sc-fCdovG dsRSAK">Responses</h3><div><button class="sc-koGwOT jeFRwJ"><svg class="sc-dcKlJK bKFTgj" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg><strong class="sc-dHZbTr ljgvjV">200<!-- --> </strong><div html="" class="sc-dTUlgT sc-fhPBcz sc-dNpohg gAHTYt hNgelr kfJzSr"></div></button></div></div></div><div class="sc-iQQCXo sc-gDpztx rcGrS ijAuiF"><div class="sc-dYwfDW bgkhSA"><button class="sc-lnzCgU brWdLq"><span type="post" class="sc-etVRix dRhDQt http-verb post">post</span><span class="sc-iuoeev hwDgZR">/api/v1/metrics_all</span><svg class="sc-dcKlJK hopFSn" style="margin-right:-25px" version="1.1" viewBox="0 0 24 24" x="0" xmlns="http://www.w3.org/2000/svg" y="0" aria-hidden="true"><polygon points="17.3 8.3 12 13.6 6.7 8.3 5.3 9.7 12 16.4 18.7 9.7 "></polygon></svg></button><div aria-hidden="true" class="sc-dRZyXS gTtGYM"><div class="sc-inRxyr iajdpk"><div html="" class="sc-dTUlgT sc-fhPBcz gAHTYt iCKFAv"></div><div tabindex="0" role="button"><div class="sc-lhcVAQ becpLA"><span></span>/api/v1/metrics_all</div></div></div></div></div><div><h3 class="sc-jJAtPt esvUOo"> <!-- -->Response samples<!-- --> </h3><div class="sc-brzPDJ ihptAH" data-rttabs="true"><ul class="react-tabs__tab-list" role="tablist"><li class="tab-success react-tabs__tab--selected" role="tab" id="tab«R176ba»0" aria-selected="true" aria-disabled="false" aria-controls="panel«R176ba»0" tabindex="0" data-rttab="true">200</li></ul><div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="panel«R176ba»0" aria-labelledby="tab«R176ba»0"><div><div class="sc-bmCFzp hMtTVz"><span class="sc-fPyrPm ktNiSp">Content type</span><div class="sc-cNFqVt sc-fMGxnE lgqimd eHJULL"><svg class="sc-fpgwy ccnFKG" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg><select class="dropdown-select"><option value="application/json" selected="">application/json</option><option value="multipart/form-data">multipart/form-data</option><option value="text/plain">text/plain</option></select><label>application/json</label></div></div><div class="sc-kmqAS jPYqSz"><div class="sc-eZbeWy ihHZyU"><div class="sc-lpbaSe elUMPN"><button><div class="sc-fsjlER jYcDQz">Copy</div></button><button> Expand all </button><button> Collapse all </button></div><div class="sc-dTUlgT gAHTYt sc-gDVcuj JZxXP"><div class="redoc-json"><code><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable "><button class="collapser" aria-label="collapse"></button><span class="token punctuation">[</span><span class="ellipsis"></span><ul class="array collapsible"><li><div class="hoverable collapsed"><span class="token string">&quot;string&quot;</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token number">0</span>,</div></li><li><div class="hoverable collapsed"><span class="token punctuation">{ }</span></div></li></ul><span class="token punctuation">]</span></div></li></ul><span class="token punctuation">]</span></code></div></div></div></div></div></div></div></div></div></div></div></div><div class="sc-dPhEwk cCFEoS"></div></div></div>
-      <script>
-      const __redoc_state = {"menu":{"activeItemIdx":-1},"spec":{"data":{"openapi":"3.0.3","info":{"title":"pgmq-rest documentation","description":"Development documentation","version":"1.0.0"},"paths":{"/":{"get":{"operationId":"getIndex","responses":{"200":{}}}},"/api/v1/send":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"number"},"content":{"application/json":{"schema":{"type":"array","items":{"type":"number"}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"number"}}},"text/plain":{"schema":{"type":"array","items":{"type":"number"}}}}}},"operationId":"postApiV1Send","tags":["Sending Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg":{},"delay":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]}},"required":["queue_name","msg"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg":{},"delay":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]}},"required":["queue_name","msg"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg":{},"delay":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]}},"required":["queue_name","msg"]}}}}}},"/api/v1/send_batch":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"number"},"content":{"application/json":{"schema":{"type":"array","items":{"type":"number"}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"number"}}},"text/plain":{"schema":{"type":"array","items":{"type":"number"}}}}}},"operationId":"postApiV1Send_batch","tags":["Sending Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msgs":{"type":"array","items":{}},"delay":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]}},"required":["queue_name","msgs"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msgs":{"type":"array","items":{}},"delay":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]}},"required":["queue_name","msgs"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msgs":{"type":"array","items":{}},"delay":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]}},"required":["queue_name","msgs"]}}}}}},"/api/v1/read":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6},"content":{"application/json":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}},"text/plain":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}}}}},"operationId":"postApiV1Read","tags":["Reading Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"vt":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"qty":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"conditional":{}},"required":["queue_name","vt","qty"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"vt":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"qty":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"conditional":{}},"required":["queue_name","vt","qty"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"vt":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"qty":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"conditional":{}},"required":["queue_name","vt","qty"]}}}}}},"/api/v1/read_with_poll":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6},"content":{"application/json":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}},"text/plain":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}}}}},"operationId":"postApiV1Read_with_poll","tags":["Reading Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"vt":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"qty":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"max_poll_seconds":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"poll_interval_ms":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"conditional":{}},"required":["queue_name","vt","qty"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"vt":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"qty":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"max_poll_seconds":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"poll_interval_ms":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"conditional":{}},"required":["queue_name","vt","qty"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"vt":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"qty":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"max_poll_seconds":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"poll_interval_ms":{"anyOf":[{"format":"integer","default":0,"type":"string"},{"type":"integer"}]},"conditional":{}},"required":["queue_name","vt","qty"]}}}}}},"/api/v1/pop":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6},"content":{"application/json":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}},"text/plain":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}}}}},"operationId":"postApiV1Pop","tags":["Reading Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}}}}}},"/api/v1/delete":{"post":{"parameters":[],"responses":{"200":{"content":{"application/json":{"schema":{"type":"boolean"}},"multipart/form-data":{"schema":{"type":"boolean"}},"text/plain":{"schema":{"type":"boolean"}}}}},"operationId":"postApiV1Delete","tags":["Deleting Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"}},"required":["queue_name","msg_id"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"}},"required":["queue_name","msg_id"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"}},"required":["queue_name","msg_id"]}}}}}},"/api/v1/delete_batch":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"number"},"content":{"application/json":{"schema":{"type":"array","items":{"type":"number"}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"number"}}},"text/plain":{"schema":{"type":"array","items":{"type":"number"}}}}}},"operationId":"postApiV1Delete_batch","tags":["Deleting Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_ids":{"type":"array","items":{"type":"number"}}},"required":["queue_name","msg_ids"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_ids":{"type":"array","items":{"type":"number"}}},"required":["queue_name","msg_ids"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_ids":{"type":"array","items":{"type":"number"}}},"required":["queue_name","msg_ids"]}}}}}},"/api/v1/purge_queue":{"post":{"parameters":[],"responses":{"200":{"content":{"application/json":{"schema":{"type":"number"}},"multipart/form-data":{"schema":{"type":"number"}},"text/plain":{"schema":{"type":"number"}}}}},"operationId":"postApiV1Purge_queue","tags":["Deleting Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}}}}}},"/api/v1/archive":{"post":{"parameters":[],"responses":{"200":{"content":{"application/json":{"schema":{"type":"boolean"}},"multipart/form-data":{"schema":{"type":"boolean"}},"text/plain":{"schema":{"type":"boolean"}}}}},"operationId":"postApiV1Archive","tags":["Deleting Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"}},"required":["queue_name","msg_id"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"}},"required":["queue_name","msg_id"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"}},"required":["queue_name","msg_id"]}}}}}},"/api/v1/archive_batch":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"number"},"content":{"application/json":{"schema":{"type":"array","items":{"type":"number"}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"number"}}},"text/plain":{"schema":{"type":"array","items":{"type":"number"}}}}}},"operationId":"postApiV1Archive_batch","tags":["Deleting Messages"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_ids":{"type":"array","items":{"type":"number"}}},"required":["queue_name","msg_ids"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_ids":{"type":"array","items":{"type":"number"}}},"required":["queue_name","msg_ids"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_ids":{"type":"array","items":{"type":"number"}}},"required":["queue_name","msg_ids"]}}}}}},"/api/v1/create":{"post":{"parameters":[],"operationId":"postApiV1Create","tags":["Queue Management"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}}}},"responses":{"200":{}}}},"/api/v1/create_unlogged":{"post":{"parameters":[],"operationId":"postApiV1Create_unlogged","tags":["Queue Management"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}}}},"responses":{"200":{}}}},"/api/v1/drop_queue":{"post":{"parameters":[],"responses":{"200":{"content":{"application/json":{"schema":{"type":"boolean"}},"multipart/form-data":{"schema":{"type":"boolean"}},"text/plain":{"schema":{"type":"boolean"}}}}},"operationId":"postApiV1Drop_queue","tags":["Queue Management"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}}}}}},"/api/v1/set_vt":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6},"content":{"application/json":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}},"text/plain":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"number"},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]},{},{}],"additionalItems":false,"minItems":6,"maxItems":6}}}}}},"operationId":"postApiV1Set_vt","tags":["Utilities"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"},"vt_offset":{"type":"number"}},"required":["queue_name","msg_id","vt_offset"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"},"vt_offset":{"type":"number"}},"required":["queue_name","msg_id","vt_offset"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"},"msg_id":{"type":"number"},"vt_offset":{"type":"number"}},"required":["queue_name","msg_id","vt_offset"]}}}}}},"/api/v1/list_queues":{"post":{"responses":{"200":{"items":{"type":"array","items":[{"type":"string"},{"type":"boolean"},{"type":"boolean"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":4,"maxItems":4},"content":{"application/json":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"boolean"},{"type":"boolean"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":4,"maxItems":4}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"boolean"},{"type":"boolean"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":4,"maxItems":4}}},"text/plain":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"boolean"},{"type":"boolean"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":4,"maxItems":4}}}}}},"operationId":"postApiV1List_queues","tags":["Utilities"]}},"/api/v1/metrics":{"post":{"parameters":[],"responses":{"200":{"items":{"type":"array","items":[{"type":"string"},{"type":"number"},{"anyOf":[{"type":"number"},{"type":"null"}]},{"anyOf":[{"type":"number"},{"type":"null"}]},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":6,"maxItems":6},"content":{"application/json":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"number"},{"anyOf":[{"type":"number"},{"type":"null"}]},{"anyOf":[{"type":"number"},{"type":"null"}]},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":6,"maxItems":6}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"number"},{"anyOf":[{"type":"number"},{"type":"null"}]},{"anyOf":[{"type":"number"},{"type":"null"}]},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":6,"maxItems":6}}},"text/plain":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"number"},{"anyOf":[{"type":"number"},{"type":"null"}]},{"anyOf":[{"type":"number"},{"type":"null"}]},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":6,"maxItems":6}}}}}},"operationId":"postApiV1Metrics","tags":["Utilities"],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"multipart/form-data":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}},"text/plain":{"schema":{"type":"object","properties":{"queue_name":{"type":"string"}},"required":["queue_name"]}}}}}},"/api/v1/metrics_all":{"post":{"responses":{"200":{"items":{"type":"array","items":[{"type":"string"},{"type":"number"},{"anyOf":[{"type":"number"},{"type":"null"}]},{"anyOf":[{"type":"number"},{"type":"null"}]},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":6,"maxItems":6},"content":{"application/json":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"number"},{"anyOf":[{"type":"number"},{"type":"null"}]},{"anyOf":[{"type":"number"},{"type":"null"}]},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":6,"maxItems":6}}},"multipart/form-data":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"number"},{"anyOf":[{"type":"number"},{"type":"null"}]},{"anyOf":[{"type":"number"},{"type":"null"}]},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":6,"maxItems":6}}},"text/plain":{"schema":{"type":"array","items":{"type":"array","items":[{"type":"string"},{"type":"number"},{"anyOf":[{"type":"number"},{"type":"null"}]},{"anyOf":[{"type":"number"},{"type":"null"}]},{"type":"number"},{"anyOf":[{"type":"Date"},{"format":"date","type":"string"},{"format":"date-time","type":"string"},{"type":"number"}]}],"additionalItems":false,"minItems":6,"maxItems":6}}}}}},"operationId":"postApiV1Metrics_all","tags":["Utilities"]}}},"components":{"schemas":{}}}},"searchIndex":{"store":["operation/getIndex","tag/Sending-Messages","tag/Sending-Messages/operation/postApiV1Send","tag/Sending-Messages/operation/postApiV1Send_batch","tag/Reading-Messages","tag/Reading-Messages/operation/postApiV1Read","tag/Reading-Messages/operation/postApiV1Read_with_poll","tag/Reading-Messages/operation/postApiV1Pop","tag/Deleting-Messages","tag/Deleting-Messages/operation/postApiV1Delete","tag/Deleting-Messages/operation/postApiV1Delete_batch","tag/Deleting-Messages/operation/postApiV1Purge_queue","tag/Deleting-Messages/operation/postApiV1Archive","tag/Deleting-Messages/operation/postApiV1Archive_batch","tag/Queue-Management","tag/Queue-Management/operation/postApiV1Create","tag/Queue-Management/operation/postApiV1Create_unlogged","tag/Queue-Management/operation/postApiV1Drop_queue","tag/Utilities","tag/Utilities/operation/postApiV1Set_vt","tag/Utilities/operation/postApiV1List_queues","tag/Utilities/operation/postApiV1Metrics","tag/Utilities/operation/postApiV1Metrics_all"],"index":{"version":"2.3.9","fields":["title","description"],"fieldVectors":[["title/0",[0,2.951]],["description/0",[1,2.49]],["title/1",[2,2.153,3,1.495]],["description/1",[]],["title/2",[4,2.951]],["description/2",[5,2.49]],["title/3",[6,2.951]],["description/3",[7,2.49]],["title/4",[3,1.495,8,2.153]],["description/4",[]],["title/5",[9,2.951]],["description/5",[10,2.49]],["title/6",[11,2.951]],["description/6",[12,2.49]],["title/7",[13,2.951]],["description/7",[14,2.49]],["title/8",[3,1.495,15,2.153]],["description/8",[]],["title/9",[16,2.951]],["description/9",[17,2.49]],["title/10",[18,2.951]],["description/10",[19,2.49]],["title/11",[20,2.951]],["description/11",[21,2.49]],["title/12",[22,2.951]],["description/12",[23,2.49]],["title/13",[24,2.951]],["description/13",[25,2.49]],["title/14",[26,2.153,27,2.153]],["description/14",[]],["title/15",[28,2.951]],["description/15",[29,2.49]],["title/16",[30,2.951]],["description/16",[31,2.49]],["title/17",[32,2.951]],["description/17",[33,2.49]],["title/18",[34,2.951]],["description/18",[]],["title/19",[35,2.951]],["description/19",[36,2.49]],["title/20",[37,2.951]],["description/20",[38,2.49]],["title/21",[39,2.951]],["description/21",[40,2.49]],["title/22",[41,2.951]],["description/22",[42,2.49]]],"invertedIndex":[["",{"_index":1,"title":{},"description":{"0":{}}}],["api/v1/arch",{"_index":23,"title":{},"description":{"12":{}}}],["api/v1/archive_batch",{"_index":25,"title":{},"description":{"13":{}}}],["api/v1/cr",{"_index":29,"title":{},"description":{"15":{}}}],["api/v1/create_unlog",{"_index":31,"title":{},"description":{"16":{}}}],["api/v1/delet",{"_index":17,"title":{},"description":{"9":{}}}],["api/v1/delete_batch",{"_index":19,"title":{},"description":{"10":{}}}],["api/v1/drop_queu",{"_index":33,"title":{},"description":{"17":{}}}],["api/v1/list_queu",{"_index":38,"title":{},"description":{"20":{}}}],["api/v1/metr",{"_index":40,"title":{},"description":{"21":{}}}],["api/v1/metrics_al",{"_index":42,"title":{},"description":{"22":{}}}],["api/v1/pop",{"_index":14,"title":{},"description":{"7":{}}}],["api/v1/purge_queu",{"_index":21,"title":{},"description":{"11":{}}}],["api/v1/read",{"_index":10,"title":{},"description":{"5":{}}}],["api/v1/read_with_pol",{"_index":12,"title":{},"description":{"6":{}}}],["api/v1/send",{"_index":5,"title":{},"description":{"2":{}}}],["api/v1/send_batch",{"_index":7,"title":{},"description":{"3":{}}}],["api/v1/set_vt",{"_index":36,"title":{},"description":{"19":{}}}],["delet",{"_index":15,"title":{"8":{}},"description":{}}],["getindex",{"_index":0,"title":{"0":{}},"description":{}}],["manag",{"_index":27,"title":{"14":{}},"description":{}}],["messag",{"_index":3,"title":{"1":{},"4":{},"8":{}},"description":{}}],["postapiv1arch",{"_index":22,"title":{"12":{}},"description":{}}],["postapiv1archive_batch",{"_index":24,"title":{"13":{}},"description":{}}],["postapiv1cr",{"_index":28,"title":{"15":{}},"description":{}}],["postapiv1create_unlog",{"_index":30,"title":{"16":{}},"description":{}}],["postapiv1delet",{"_index":16,"title":{"9":{}},"description":{}}],["postapiv1delete_batch",{"_index":18,"title":{"10":{}},"description":{}}],["postapiv1drop_queu",{"_index":32,"title":{"17":{}},"description":{}}],["postapiv1list_queu",{"_index":37,"title":{"20":{}},"description":{}}],["postapiv1metr",{"_index":39,"title":{"21":{}},"description":{}}],["postapiv1metrics_al",{"_index":41,"title":{"22":{}},"description":{}}],["postapiv1pop",{"_index":13,"title":{"7":{}},"description":{}}],["postapiv1purge_queu",{"_index":20,"title":{"11":{}},"description":{}}],["postapiv1read",{"_index":9,"title":{"5":{}},"description":{}}],["postapiv1read_with_pol",{"_index":11,"title":{"6":{}},"description":{}}],["postapiv1send",{"_index":4,"title":{"2":{}},"description":{}}],["postapiv1send_batch",{"_index":6,"title":{"3":{}},"description":{}}],["postapiv1set_vt",{"_index":35,"title":{"19":{}},"description":{}}],["queue",{"_index":26,"title":{"14":{}},"description":{}}],["read",{"_index":8,"title":{"4":{}},"description":{}}],["send",{"_index":2,"title":{"1":{}},"description":{}}],["util",{"_index":34,"title":{"18":{}},"description":{}}]],"pipeline":[]}},"options":{}};
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/send", data)
+    req.Header = headers
 
-      var container = document.getElementById('redoc');
-      Redoc.hydrate(__redoc_state, container);
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
 
-      </script>
-</body>
+```
 
-</html>
+`POST /api/v1/send`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "msg": null,
+  "delay": 0
+}
+```
+
+```
+queue_name: string
+msg: null
+delay: 0
+
+```
+
+```yaml
+queue_name: string
+msg: null
+delay: 0
+
+```
+
+<h3 id="postapiv1send-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» msg|body|any|true|none|
+|» delay|body|any|false|none|
+|»» *anonymous*|body|string(integer)|false|none|
+|»» *anonymous*|body|integer|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  0
+]
+```
+
+```
+[0]
+```
+
+<h3 id="postapiv1send-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1send-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Send_batch
+
+<a id="opIdpostApiV1Send_batch"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/send_batch \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/send_batch HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "msgs": [
+    null
+  ],
+  "delay": 0
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/send_batch',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/send_batch', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/send_batch',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/send_batch");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/send_batch", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/send_batch`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "msgs": [
+    null
+  ],
+  "delay": 0
+}
+```
+
+```
+queue_name: string
+msgs:
+  - null
+delay: 0
+
+```
+
+```yaml
+queue_name: string
+msgs:
+  - null
+delay: 0
+
+```
+
+<h3 id="postapiv1send_batch-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» msgs|body|[any]|true|none|
+|» delay|body|any|false|none|
+|»» *anonymous*|body|string(integer)|false|none|
+|»» *anonymous*|body|integer|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  0
+]
+```
+
+```
+[0]
+```
+
+<h3 id="postapiv1send_batch-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1send_batch-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="pgmq-rest-documentation-reading-messages">Reading Messages</h1>
+
+## postApiV1Read
+
+<a id="opIdpostApiV1Read"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/read \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/read HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "vt": 0,
+  "qty": 0,
+  "conditional": null
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/read',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/read', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/read',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/read");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/read", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/read`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "vt": 0,
+  "qty": 0,
+  "conditional": null
+}
+```
+
+```
+queue_name: string
+vt: 0
+qty: 0
+conditional: null
+
+```
+
+```yaml
+queue_name: string
+vt: 0
+qty: 0
+conditional: null
+
+```
+
+<h3 id="postapiv1read-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» vt|body|any|true|none|
+|»» *anonymous*|body|string(integer)|false|none|
+|»» *anonymous*|body|integer|false|none|
+|» qty|body|any|true|none|
+|»» *anonymous*|body|string(integer)|false|none|
+|»» *anonymous*|body|integer|false|none|
+|» conditional|body|any|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  [
+    0,
+    0,
+    {},
+    {},
+    null,
+    null
+  ]
+]
+```
+
+```
+[[0,0,{},{},null,null]]
+```
+
+<h3 id="postapiv1read-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1read-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Read_with_poll
+
+<a id="opIdpostApiV1Read_with_poll"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/read_with_poll \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/read_with_poll HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "vt": 0,
+  "qty": 0,
+  "max_poll_seconds": 0,
+  "poll_interval_ms": 0,
+  "conditional": null
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/read_with_poll',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/read_with_poll', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/read_with_poll',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/read_with_poll");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/read_with_poll", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/read_with_poll`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "vt": 0,
+  "qty": 0,
+  "max_poll_seconds": 0,
+  "poll_interval_ms": 0,
+  "conditional": null
+}
+```
+
+```
+queue_name: string
+vt: 0
+qty: 0
+max_poll_seconds: 0
+poll_interval_ms: 0
+conditional: null
+
+```
+
+```yaml
+queue_name: string
+vt: 0
+qty: 0
+max_poll_seconds: 0
+poll_interval_ms: 0
+conditional: null
+
+```
+
+<h3 id="postapiv1read_with_poll-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» vt|body|any|true|none|
+|»» *anonymous*|body|string(integer)|false|none|
+|»» *anonymous*|body|integer|false|none|
+|» qty|body|any|true|none|
+|»» *anonymous*|body|string(integer)|false|none|
+|»» *anonymous*|body|integer|false|none|
+|» max_poll_seconds|body|any|false|none|
+|»» *anonymous*|body|string(integer)|false|none|
+|»» *anonymous*|body|integer|false|none|
+|» poll_interval_ms|body|any|false|none|
+|»» *anonymous*|body|string(integer)|false|none|
+|»» *anonymous*|body|integer|false|none|
+|» conditional|body|any|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  [
+    0,
+    0,
+    {},
+    {},
+    null,
+    null
+  ]
+]
+```
+
+```
+[[0,0,{},{},null,null]]
+```
+
+<h3 id="postapiv1read_with_poll-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1read_with_poll-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Pop
+
+<a id="opIdpostApiV1Pop"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/pop \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/pop HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/pop',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/pop', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/pop',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/pop");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/pop", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/pop`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string"
+}
+```
+
+```
+queue_name: string
+
+```
+
+```yaml
+queue_name: string
+
+```
+
+<h3 id="postapiv1pop-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  [
+    0,
+    0,
+    {},
+    {},
+    null,
+    null
+  ]
+]
+```
+
+```
+[[0,0,{},{},null,null]]
+```
+
+<h3 id="postapiv1pop-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1pop-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="pgmq-rest-documentation-deleting-messages">Deleting Messages</h1>
+
+## postApiV1Delete
+
+<a id="opIdpostApiV1Delete"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/delete \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/delete HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "msg_id": 0
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/delete',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/delete', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/delete',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/delete");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/delete", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/delete`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "msg_id": 0
+}
+```
+
+```
+queue_name: string
+msg_id: 0
+
+```
+
+```yaml
+queue_name: string
+msg_id: 0
+
+```
+
+<h3 id="postapiv1delete-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» msg_id|body|number|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+true
+```
+
+```
+true
+```
+
+<h3 id="postapiv1delete-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|boolean|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Delete_batch
+
+<a id="opIdpostApiV1Delete_batch"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/delete_batch \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/delete_batch HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "msg_ids": [
+    0
+  ]
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/delete_batch',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/delete_batch', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/delete_batch',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/delete_batch");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/delete_batch", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/delete_batch`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "msg_ids": [
+    0
+  ]
+}
+```
+
+```
+queue_name: string
+msg_ids:
+  - 0
+
+```
+
+```yaml
+queue_name: string
+msg_ids:
+  - 0
+
+```
+
+<h3 id="postapiv1delete_batch-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» msg_ids|body|[number]|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  0
+]
+```
+
+```
+[0]
+```
+
+<h3 id="postapiv1delete_batch-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1delete_batch-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Purge_queue
+
+<a id="opIdpostApiV1Purge_queue"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/purge_queue \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/purge_queue HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/purge_queue',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/purge_queue', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/purge_queue',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/purge_queue");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/purge_queue", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/purge_queue`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string"
+}
+```
+
+```
+queue_name: string
+
+```
+
+```yaml
+queue_name: string
+
+```
+
+<h3 id="postapiv1purge_queue-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+0
+```
+
+```
+0
+```
+
+<h3 id="postapiv1purge_queue-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|number|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Archive
+
+<a id="opIdpostApiV1Archive"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/archive \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/archive HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "msg_id": 0
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/archive',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/archive', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/archive',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/archive");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/archive", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/archive`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "msg_id": 0
+}
+```
+
+```
+queue_name: string
+msg_id: 0
+
+```
+
+```yaml
+queue_name: string
+msg_id: 0
+
+```
+
+<h3 id="postapiv1archive-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» msg_id|body|number|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+true
+```
+
+```
+true
+```
+
+<h3 id="postapiv1archive-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|boolean|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Archive_batch
+
+<a id="opIdpostApiV1Archive_batch"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/archive_batch \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/archive_batch HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "msg_ids": [
+    0
+  ]
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/archive_batch',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/archive_batch', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/archive_batch',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/archive_batch");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/archive_batch", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/archive_batch`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "msg_ids": [
+    0
+  ]
+}
+```
+
+```
+queue_name: string
+msg_ids:
+  - 0
+
+```
+
+```yaml
+queue_name: string
+msg_ids:
+  - 0
+
+```
+
+<h3 id="postapiv1archive_batch-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» msg_ids|body|[number]|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  0
+]
+```
+
+```
+[0]
+```
+
+<h3 id="postapiv1archive_batch-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1archive_batch-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="pgmq-rest-documentation-queue-management">Queue Management</h1>
+
+## postApiV1Create
+
+<a id="opIdpostApiV1Create"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/create \
+  -H 'Content-Type: application/json'
+
+```
+
+```http
+POST /api/v1/create HTTP/1.1
+
+Content-Type: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string"
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('/api/v1/create',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json'
+}
+
+r = requests.post('/api/v1/create', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/create',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/create");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/create", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/create`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string"
+}
+```
+
+```
+queue_name: string
+
+```
+
+```yaml
+queue_name: string
+
+```
+
+<h3 id="postapiv1create-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+
+<h3 id="postapiv1create-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Create_unlogged
+
+<a id="opIdpostApiV1Create_unlogged"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/create_unlogged \
+  -H 'Content-Type: application/json'
+
+```
+
+```http
+POST /api/v1/create_unlogged HTTP/1.1
+
+Content-Type: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string"
+}';
+const headers = {
+  'Content-Type':'application/json'
+};
+
+fetch('/api/v1/create_unlogged',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json'
+}
+
+r = requests.post('/api/v1/create_unlogged', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/create_unlogged',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/create_unlogged");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/create_unlogged", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/create_unlogged`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string"
+}
+```
+
+```
+queue_name: string
+
+```
+
+```yaml
+queue_name: string
+
+```
+
+<h3 id="postapiv1create_unlogged-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+
+<h3 id="postapiv1create_unlogged-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|None|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Drop_queue
+
+<a id="opIdpostApiV1Drop_queue"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/drop_queue \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/drop_queue HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/drop_queue',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/drop_queue', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/drop_queue',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/drop_queue");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/drop_queue", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/drop_queue`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string"
+}
+```
+
+```
+queue_name: string
+
+```
+
+```yaml
+queue_name: string
+
+```
+
+<h3 id="postapiv1drop_queue-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+true
+```
+
+```
+true
+```
+
+<h3 id="postapiv1drop_queue-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|boolean|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="pgmq-rest-documentation-utilities">Utilities</h1>
+
+## postApiV1Set_vt
+
+<a id="opIdpostApiV1Set_vt"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/set_vt \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/set_vt HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string",
+  "msg_id": 0,
+  "vt_offset": 0
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/set_vt',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/set_vt', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/set_vt',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/set_vt");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/set_vt", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/set_vt`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string",
+  "msg_id": 0,
+  "vt_offset": 0
+}
+```
+
+```
+queue_name: string
+msg_id: 0
+vt_offset: 0
+
+```
+
+```yaml
+queue_name: string
+msg_id: 0
+vt_offset: 0
+
+```
+
+<h3 id="postapiv1set_vt-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+|» msg_id|body|number|true|none|
+|» vt_offset|body|number|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  [
+    0,
+    0,
+    {},
+    {},
+    null,
+    null
+  ]
+]
+```
+
+```
+[[0,0,{},{},null,null]]
+```
+
+<h3 id="postapiv1set_vt-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1set_vt-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1List_queues
+
+<a id="opIdpostApiV1List_queues"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/list_queues \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/list_queues HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/list_queues',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/list_queues', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/list_queues',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/list_queues");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/list_queues", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/list_queues`
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  [
+    "string",
+    true,
+    true,
+    {}
+  ]
+]
+```
+
+```
+[["string",true,true,{}]]
+```
+
+<h3 id="postapiv1list_queues-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1list_queues-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Metrics
+
+<a id="opIdpostApiV1Metrics"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/metrics \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/metrics HTTP/1.1
+
+Content-Type: application/json
+Accept: application/json
+
+```
+
+```javascript
+const inputBody = '{
+  "queue_name": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/metrics',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/metrics', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Content-Type' => 'application/json',
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/metrics',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/metrics");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Content-Type": []string{"application/json"},
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/metrics", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/metrics`
+
+> Body parameter
+
+```json
+{
+  "queue_name": "string"
+}
+```
+
+```
+queue_name: string
+
+```
+
+```yaml
+queue_name: string
+
+```
+
+<h3 id="postapiv1metrics-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|object|true|none|
+|» queue_name|body|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  [
+    "string",
+    0,
+    0,
+    0,
+    0,
+    {}
+  ]
+]
+```
+
+```
+[["string",0,0,0,0,{}]]
+```
+
+<h3 id="postapiv1metrics-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1metrics-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## postApiV1Metrics_all
+
+<a id="opIdpostApiV1Metrics_all"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /api/v1/metrics_all \
+  -H 'Accept: application/json'
+
+```
+
+```http
+POST /api/v1/metrics_all HTTP/1.1
+
+Accept: application/json
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('/api/v1/metrics_all',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': 'application/json'
+}
+
+r = requests.post('/api/v1/metrics_all', headers = headers)
+
+print(r.json())
+
+```
+
+```ruby
+require 'rest-client'
+require 'json'
+
+headers = {
+  'Accept' => 'application/json'
+}
+
+result = RestClient.post '/api/v1/metrics_all',
+  params: {
+  }, headers: headers
+
+p JSON.parse(result)
+
+```
+
+```java
+URL obj = new URL("/api/v1/metrics_all");
+HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+con.setRequestMethod("POST");
+int responseCode = con.getResponseCode();
+BufferedReader in = new BufferedReader(
+    new InputStreamReader(con.getInputStream()));
+String inputLine;
+StringBuffer response = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+    response.append(inputLine);
+}
+in.close();
+System.out.println(response.toString());
+
+```
+
+```go
+package main
+
+import (
+       "bytes"
+       "net/http"
+)
+
+func main() {
+
+    headers := map[string][]string{
+        "Accept": []string{"application/json"},
+    }
+
+    data := bytes.NewBuffer([]byte{jsonReq})
+    req, err := http.NewRequest("POST", "/api/v1/metrics_all", data)
+    req.Header = headers
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    // ...
+}
+
+```
+
+`POST /api/v1/metrics_all`
+
+> Example responses
+
+> 200 Response
+
+```json
+[
+  [
+    "string",
+    0,
+    0,
+    0,
+    0,
+    {}
+  ]
+]
+```
+
+```
+[["string",0,0,0,0,{}]]
+```
+
+<h3 id="postapiv1metrics_all-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+<h3 id="postapiv1metrics_all-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+# Schemas
+

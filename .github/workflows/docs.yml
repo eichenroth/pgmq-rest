@@ -72,12 +72,17 @@ jobs:
         run: |
           curl -s http://localhost:8080/docs/json > docs/openapi.json
 
-      - name: Install Redocly CLI
-        run: npm install -g @redocly/cli
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install widdershins
+        run: npm install -g widdershins
 
       - name: Generate Documentation
         run: |
-          redocly build-docs docs/openapi.json -o docs/api-docs.md
+          widdershins docs/openapi.json -o docs/api-docs.md --language_tabs 'shell:Shell' 'http:HTTP' 'javascript:JavaScript' 'python:Python' 'ruby:Ruby' 'java:Java' 'go:Go'
 
       - name: Commit and Push Documentation
         run: |

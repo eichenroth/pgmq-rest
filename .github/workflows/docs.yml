@@ -5,6 +5,11 @@ on:
     branches: [ openapi-docs ]
   workflow_dispatch:
 
+# Add concurrency to cancel previous runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   generate-docs:
     # Skip if the commit was made by the GitHub Action

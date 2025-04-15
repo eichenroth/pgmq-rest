@@ -84,10 +84,13 @@ jobs:
         run: |
           widdershins docs/openapi.json -o docs/api-docs.md --language_tabs 'shell:Shell' 'http:HTTP' 'javascript:JavaScript' 'python:Python' 'ruby:Ruby' 'java:Java' 'go:Go'
 
+      - name: Remove OpenAPI spec
+        run: rm docs/openapi.json
+
       - name: Commit and Push Documentation
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add docs/openapi.json docs/api-docs.md
+          git add docs/api-docs.md
           git commit -m "Update API documentation"
           git push origin openapi-docs

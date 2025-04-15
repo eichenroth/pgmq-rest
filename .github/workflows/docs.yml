@@ -1,0 +1,80 @@
+name: Generate API Documentation
+
+on:
+  push:
+    branches: [ openapi-docs ]
+  workflow_dispatch:
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    services:
+      pgmq:
+        image: tembo.docker.scarf.sh/tembo/pg17-pgmq:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: openapi-docs
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build pgmq-rest Docker image
+        run: docker build -t pgmq-rest .
+
+      - name: Run pgmq-rest container
+        run: |
+          docker run -d \
+            --name pgmq-rest \
+            --network host \
+            -e DB_HOST=localhost \
+            -e DB_PORT=5432 \
+            -e DB_USER=postgres \
+            -e DB_PASSWORD=postgres \
+            -e DB_NAME=postgres \
+            -e DB_POOL_SIZE=20 \
+            pgmq-rest
+
+      - name: Wait for pgmq-rest to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/ > /dev/null; then
+              echo "pgmq-rest is ready"
+              exit 0
+            fi
+            echo "Waiting for pgmq-rest to be ready..."
+            sleep 1
+          done
+          echo "pgmq-rest failed to start"
+          exit 1
+
+      - name: Fetch OpenAPI spec
+        run: |
+          curl -s http://localhost:8080/docs/json > docs/openapi.json
+
+      - name: Install Redocly CLI
+        run: npm install -g @redocly/cli
+
+      - name: Generate Documentation
+        run: |
+          redocly build-docs docs/openapi.json -o docs/api-docs.md
+
+      - name: Commit and Push Documentation
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/openapi.json docs/api-docs.md
+          git commit -m "Update API documentation"
+          git push origin openapi-docs

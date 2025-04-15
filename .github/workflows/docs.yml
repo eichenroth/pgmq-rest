@@ -83,12 +83,12 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install swagger-markdown
-        run: npm install -g swagger-markdown
+      - name: Install @redocly/cli
+        run: npm install -g @redocly/cli
 
       - name: Generate Documentation
         run: |
-          swagger-markdown -i docs/openapi.json -o docs/api-docs.md
+          redocly build-docs docs/openapi.json --output=docs/api-docs.md --format=markdown
           echo "Generated markdown size: $(wc -c < docs/api-docs.md) bytes"
           cat docs/api-docs.md
 

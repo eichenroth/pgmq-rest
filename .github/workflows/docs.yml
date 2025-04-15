@@ -84,16 +84,20 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install -g openapi-markdown
+        run: npm install -g @redocly/cli handlebars
 
       - name: Generate Documentation
         run: |
-          openapi-markdown -i docs/openapi.json -o docs/api-docs.md
+          # Convert OpenAPI spec to JSON for handlebars
+          redocly bundle docs/openapi.json --output docs/api.json
+          # Use handlebars to generate markdown from our template
+          npx handlebars docs/api.json -f docs/template.md -o docs/api-docs.md
           echo "Generated markdown size: $(wc -c < docs/api-docs.md) bytes"
           cat docs/api-docs.md
 
-      - name: Remove OpenAPI spec
-        run: rm docs/openapi.json
+      - name: Clean up
+        run: |
+          rm docs/openapi.json docs/api.json
 
       - name: Check for changes
         id: check_changes

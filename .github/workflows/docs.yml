@@ -82,12 +82,12 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install widdershins
-        run: npm install -g widdershins
+      - name: Install swagger-markdown
+        run: npm install -g swagger-markdown
 
       - name: Generate Documentation
         run: |
-          widdershins docs/openapi.json -o docs/api-docs.md --language_tabs 'shell:Shell' 'http:HTTP' 'javascript:JavaScript' 'python:Python' 'ruby:Ruby' 'java:Java' 'go:Go'
+          swagger-markdown -i docs/openapi.json -o docs/api-docs.md
 
       - name: Remove OpenAPI spec
         run: rm docs/openapi.json

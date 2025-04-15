@@ -76,6 +76,7 @@ jobs:
       - name: Fetch OpenAPI spec
         run: |
           curl -s http://localhost:8080/docs/json > docs/openapi.json
+          echo "OpenAPI spec size: $(wc -c < docs/openapi.json) bytes"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -88,11 +89,23 @@ jobs:
       - name: Generate Documentation
         run: |
           swagger-markdown -i docs/openapi.json -o docs/api-docs.md
+          echo "Generated markdown size: $(wc -c < docs/api-docs.md) bytes"
+          cat docs/api-docs.md
 
       - name: Remove OpenAPI spec
         run: rm docs/openapi.json
 
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet docs/api-docs.md; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Commit and Push Documentation
+        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"

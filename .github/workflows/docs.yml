@@ -83,12 +83,12 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install @redocly/cli
-        run: npm install -g @redocly/cli
+      - name: Install dependencies
+        run: npm install -g openapi-markdown
 
       - name: Generate Documentation
         run: |
-          redocly build-docs docs/openapi.json --output=docs/api-docs.md --format=markdown
+          openapi-markdown -i docs/openapi.json -o docs/api-docs.md
           echo "Generated markdown size: $(wc -c < docs/api-docs.md) bytes"
           cat docs/api-docs.md
 

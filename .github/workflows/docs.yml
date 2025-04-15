@@ -60,6 +60,9 @@ jobs:
           echo "pgmq-rest failed to start"
           exit 1
 
+      - name: Create docs directory
+        run: mkdir -p docs
+
       - name: Fetch OpenAPI spec
         run: |
           curl -s http://localhost:8080/docs/json > docs/openapi.json

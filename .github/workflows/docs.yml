@@ -92,6 +92,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add docs/api-docs.md
-          git rm docs/openapi.json
           git commit -m "Update API documentation"
           git push origin openapi-docs
